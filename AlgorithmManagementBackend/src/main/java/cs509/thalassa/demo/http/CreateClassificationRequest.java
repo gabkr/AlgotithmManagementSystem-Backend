@@ -42,6 +42,6 @@ public class CreateClassificationRequest {
 	**/
 	
 	public String toString() {
-		return "CreateClassification(" + nameClassification + "," + id +  "parentClassification)";
+		return "CreateClassification(" + nameClassification + "," + id + " "+ ","+ "parentClassification)";
 	}
 }

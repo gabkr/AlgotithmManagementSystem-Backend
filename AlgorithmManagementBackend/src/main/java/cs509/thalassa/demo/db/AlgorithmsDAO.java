@@ -6,19 +6,19 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
-import cs509.thalassa.demo.model.Classification;
+import cs509.thalassa.demo.model.Algorithm;
 
 /**
  * Note that CAPITALIZATION matters regarding the table name. If you create with 
  * a capital "Constants" then it must be "Constants" in the SQL queries.
  */
-public class ClassificationsDAO { 
+public class AlgorithmsDAO { 
 
 	java.sql.Connection conn;
 	LambdaLogger logger;
-	final String tblName = "Classification";   // Exact capitalization
+	final String tblName = "Algorithm";   // Exact capitalization
 
-    public ClassificationsDAO(LambdaLogger logger) {
+    public AlgorithmsDAO(LambdaLogger logger) {
     	this.logger = logger;
     	try  {
     		conn = DatabaseUtil.connect();
@@ -27,50 +27,50 @@ public class ClassificationsDAO {
     	}
     }
 
-    public Classification getClassification(String nameClassification) throws Exception {
+    public Algorithm getAlgorithm(String nameAlgorithm) throws Exception {
         
         try {
-            Classification classification = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameClassification=?;");
-            ps.setString(1,  nameClassification);
+            Algorithm algorithm = null;
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameAlgorithm=?;");
+            ps.setString(1,  nameAlgorithm);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
-                classification = generateClassification(resultSet);
+                algorithm = generateAlgorithm(resultSet);
             }
             resultSet.close();
             ps.close();
             
-            return classification;
+            return algorithm;
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in getting classification: " + e.getMessage());
+            throw new Exception("Failed in getting algorithm: " + e.getMessage());
         }
     }
 
     
-    public List<Classification> getRelatedClassifications(String parentClassification) throws Exception {
+    public List<Algorithm> getRelatedAlgorithms(String parentId) throws Exception {
         
-    	List<Classification> allClassifications = new ArrayList<>();
+    	List<Algorithm> allAlgorithms = new ArrayList<>();
     	
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification=?;");
-            ps.setString(1,  parentClassification);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentId=?;");
+            ps.setString(1,  parentId);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
-            	Classification c = generateClassification(resultSet);
-                allClassifications.add(c);
+            	Algorithm c = generateAlgorithm(resultSet);
+                allAlgorithms.add(c);
             }
             resultSet.close();
             ps.close();
             
-            return allClassifications;
+            return allAlgorithms;
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in getting classification: " + e.getMessage());
+            throw new Exception("Failed in getting algorithm: " + e.getMessage());
         }
     }
     
@@ -106,28 +106,28 @@ public class ClassificationsDAO {
     }
 	**/
 
-    public boolean addClassification(Classification classification) throws Exception {
+    public boolean addAlgorithm(Algorithm algorithm) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameClassification = ?;");
-            ps.setString(1, classification.nameClassification);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameAlgorithm = ?;");
+            ps.setString(1, algorithm.nameAlgorithm);
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
             while (resultSet.next()) {
-                Classification c = generateClassification(resultSet);
+                Algorithm c = generateAlgorithm(resultSet);
                 resultSet.close();
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (nameClassification,id,parentClassification) values(?,?,?);");
-            ps.setString(1,  classification.nameClassification);
-            ps.setString(2,  classification.id);
-            ps.setString(3,  classification.parentClassification);
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (nameAlgorithm,idAlgorithm,parentId) values(?,?,?);");
+            ps.setString(1,  algorithm.nameAlgorithm);
+            ps.setString(2,  algorithm.idAlgorithm);
+            ps.setString(3,  algorithm.parentId);
             ps.execute();
             return true;
 
         } catch (Exception e) {
-            throw new Exception("Failed to insert classification: " + e.getMessage());
+            throw new Exception("Failed to insert algorithm: " + e.getMessage());
         }
     }
 
@@ -154,10 +154,10 @@ public class ClassificationsDAO {
     }
 	**/
 	
-    private Classification generateClassification(ResultSet resultSet) throws Exception {
-        String nameClassification  = resultSet.getString("nameClassification");
-        String id = resultSet.getString("id");
-        String parentClassification = resultSet.getString("parentClassification");
-        return new Classification (nameClassification, id, parentClassification);
+    private Algorithm generateAlgorithm(ResultSet resultSet) throws Exception {
+        String nameAlgorithm  = resultSet.getString("nameAlgorithm");
+        String idAlgorithm = resultSet.getString("idAlgorithm");
+        String parentId = resultSet.getString("parentId");
+        return new Algorithm (nameAlgorithm, idAlgorithm, parentId);
     }
 }
