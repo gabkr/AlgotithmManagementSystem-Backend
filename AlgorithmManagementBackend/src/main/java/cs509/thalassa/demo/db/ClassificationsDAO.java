@@ -17,6 +17,7 @@ public class ClassificationsDAO {
 	java.sql.Connection conn;
 	LambdaLogger logger;
 	final String tblName = "Classification";   // Exact capitalization
+	final String tblAlgorithmName = "Algorithm";   // Exact capitalization
 
     public ClassificationsDAO(LambdaLogger logger) {
     	this.logger = logger;
@@ -55,9 +56,25 @@ public class ClassificationsDAO {
     	List<Classification> allClassifications = new ArrayList<>();
     	
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification=?;");
-            ps.setString(1,  parentClassification);
-            ResultSet resultSet = ps.executeQuery();
+        	PreparedStatement ps;
+        	if (parentClassification != null) {
+        		ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
+        				"from " + tblName + " c1\n" + 
+        				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
+        				"         LEFT JOIN " + tblAlgorithmName + " A on c1.id = A.parentId\n" + 
+        				"where c1.parentClassification=? group by c1.id;");
+//                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification=?;");
+                ps.setString(1,  parentClassification);        		
+        	} else {
+//                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification is NULL;");
+        		ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
+        				"from " + tblName + " c1\n" + 
+        				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
+        				"         LEFT JOIN " + tblAlgorithmName + " A on c1.id = A.parentId\n" + 
+        				"where c1.parentClassification is NULL group by c1.id;");
+        	}
+
+        	ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
             	Classification c = generateClassification(resultSet);
@@ -158,6 +175,9 @@ public class ClassificationsDAO {
         String nameClassification  = resultSet.getString("nameClassification");
         String id = resultSet.getString("id");
         String parentClassification = resultSet.getString("parentClassification");
-        return new Classification (nameClassification, id, parentClassification);
+        int childClassificationsCount = resultSet.getInt("childClassificationsCount");
+        int algorithmsCount = resultSet.getInt("algorithmsCount");
+
+        return new Classification(nameClassification, id, parentClassification, childClassificationsCount, algorithmsCount);
     }
 }
