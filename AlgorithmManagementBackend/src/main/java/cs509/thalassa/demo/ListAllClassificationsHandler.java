@@ -104,7 +104,8 @@ public class ListAllClassificationsHandler implements RequestHandler<ListClassif
 	public AllClassificationsResponse handleRequest(ListClassificationRequest req, Context context)  {
 		logger = context.getLogger();
 		logger.log("Loading Java Lambda handler to list all constants");
-
+		logger.log("classificationId: " + req.parentClassification);
+		logger.log("classificationId: " + req);
 		AllClassificationsResponse response;
 		try {
 			// get all user defined constants AND system-defined constants.

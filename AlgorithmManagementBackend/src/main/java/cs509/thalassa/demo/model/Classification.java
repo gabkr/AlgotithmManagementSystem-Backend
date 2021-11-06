@@ -5,6 +5,8 @@ public class Classification {
 	public final String id;
 	public final boolean system;      // when TRUE this is actually stored in S3 bucket
 	public final String parentClassification;
+//	public final int childClassificationsCount;
+//	public final int algorithmsCount;
 	
 	public Classification (String nameClassification, String id, String parentClassification) {
 		this.nameClassification = nameClassification;
@@ -18,7 +20,19 @@ public class Classification {
 		this.id = id;
 		this.parentClassification = null;
 		this.system = false;
+//		this.childClassificationsCount = 0;
+//		this.algorithmsCount = 0;
 	}
+
+//	public Classification (String nameClassification, String id, String parentClassification) {
+//		this.nameClassification = nameClassification;
+//		this.id = id;
+//		this.parentClassification = parentClassification;
+//		this.system = false;
+//		this.childClassificationsCount = 0;
+//		this.algorithmsCount = 0;
+//	}
+
 	
 	/**
 	public Classification (String parent, double child, boolean system) {
