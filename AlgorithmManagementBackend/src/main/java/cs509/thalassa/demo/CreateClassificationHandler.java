@@ -42,7 +42,7 @@ public class CreateClassificationHandler implements RequestHandler<CreateClassif
 		
 		// check if present
 		Classification exist = dao.getClassification(nameClassification);
-		Classification classification = new Classification (nameClassification, id, parentClassification);
+		Classification classification = new Classification(nameClassification, id, parentClassification);
 		if (exist == null) {
 			return dao.addClassification(classification);
 		} else {
@@ -96,12 +96,14 @@ public class CreateClassificationHandler implements RequestHandler<CreateClassif
 			} else {
 			**/
 			if (createClassification(req.nameClassification, req.id, req.parentClassification)) {
-				response = new CreateClassificationResponse(req.nameClassification);
+				logger.log("createclassification..");
+				response = new CreateClassificationResponse(req.id);
 			} else {
-				response = new CreateClassificationResponse(req.nameClassification, 422);
+				response = new CreateClassificationResponse(req.nameClassification + " already exists", 422);
 			}
 		} catch (Exception e) {
-			response = new CreateClassificationResponse("Unable to create constant: " + req.nameClassification + "(" + e.getMessage() + ")", 400);
+			response = new CreateClassificationResponse("Unable to create classification: " + req.nameClassification + "(" + e.getMessage() + ")", 400);
+			e.printStackTrace();
 		}
 
 		return response;

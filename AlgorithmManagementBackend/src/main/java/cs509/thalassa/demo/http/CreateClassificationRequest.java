@@ -1,5 +1,7 @@
 package cs509.thalassa.demo.http;
 
+import java.util.UUID;
+
 public class CreateClassificationRequest {
 	public String nameClassification;
 	public String id;
@@ -19,17 +21,18 @@ public class CreateClassificationRequest {
 	public void setParentClassification(String c) { this.parentClassification = c; }
 	
 	public CreateClassificationRequest() {
+		this.id = UUID.randomUUID().toString();		
 	}
 	
-	public CreateClassificationRequest (String n, String id, String parentId) {
+	public CreateClassificationRequest (String n, String parentId) {
 		this.nameClassification = n;
-		this.id = id;
+		this.id = UUID.randomUUID().toString();
 		this.parentClassification = parentId;
 	}
 	
-	public CreateClassificationRequest (String n, String id) {
+	public CreateClassificationRequest (String n) {
 		this.nameClassification = n;
-		this.id = id;
+		this.id = UUID.randomUUID().toString();
 		this.parentClassification = null;
 	}
 	
