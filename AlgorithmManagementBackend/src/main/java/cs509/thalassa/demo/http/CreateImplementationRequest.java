@@ -5,6 +5,7 @@ public class CreateImplementationRequest {
 	public String algorithmId;
 	public String idImplementation;
 	public boolean system;
+	public String value;
 	
 	public String getImplementationFile( ) { return implementationFile; }
 	public void setImplementationFile(String implementationFile) { this.implementationFile = implementationFile; }
@@ -18,24 +19,22 @@ public class CreateImplementationRequest {
 	public String getAlgorithmId() { return algorithmId; }
 	public void setAlgorithmId(String c) { this.algorithmId = c; }
 	
+	public String getValue() { return value; }
+	public void setValue(String d) { this.value = d; }
+	
 	public CreateImplementationRequest() {
 	}
 	
-	public CreateImplementationRequest (String n, String idImplementation, String algorithmId) {
+	public CreateImplementationRequest (String n, String idImplementation, String algorithmId, String value) {
 		this.implementationFile = n;
 		this.idImplementation = idImplementation;
 		this.algorithmId = algorithmId;
+		this.system = true;
+		this.value = value;
 	}
 	
-	/**
-	public CreateClassificationRequest (String n, double val, boolean system) {
-		this.parent = n;
-		this.child = val;
-		this.system = system;
-	}
-	**/
 	
 	public String toString() {
-		return "CreateImplementation(" + implementationFile + "," + idImplementation + " "+ ","+ algorithmId+")";
+		return "CreateImplementation(" + implementationFile + "," + idImplementation + " "+ ","+ algorithmId+ value+")";
 	}
 }

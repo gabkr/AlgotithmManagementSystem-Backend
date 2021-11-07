@@ -17,7 +17,6 @@ import cs509.thalassa.demo.db.ImplementationDAO;
 import cs509.thalassa.demo.http.CreateImplementationRequest;
 import cs509.thalassa.demo.http.CreateImplementationResponse;
 import cs509.thalassa.demo.model.Implementation;
-
 /**
  * Create a new constant and store in S3 bucket.
  */
@@ -26,23 +25,23 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 	LambdaLogger logger;
 	
 	// To access S3 storage
-	//private AmazonS3 s3 = null;
+	private AmazonS3 s3 = null;
 		
 	// Note: this works, but it would be better to move this to environment/configuration mechanisms
 	// which you don't have to do for this project.
-	//public static final String REAL_BUCKET = "constants/";
+	public static final String REAL_BUCKET = "implementations/";
 	
 	/** Store into RDS.
 	 * 
 	 * @throws Exception 
 	 */
-	boolean createImplementation(String implementationFile, String idImplementation, String algorithmId) throws Exception { 
-		if (logger != null) { logger.log("in createAlgorithm"); }
+	boolean createImplementation(String implementationFile, String idImplementation, String algorithmId, String value) throws Exception { 
+		if (logger != null) { logger.log("in createImplementation"); }
 		ImplementationDAO dao = new ImplementationDAO(logger);
 		
 		// check if present
 		Implementation exist = dao.getImplementation(idImplementation);
-		Implementation implementation = new Implementation (implementationFile, idImplementation, algorithmId);
+		Implementation implementation = new Implementation (implementationFile, idImplementation, algorithmId, value);
 		if (exist == null) {
 			return dao.addImplementation(implementation);
 		} else {
@@ -54,9 +53,9 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 	 * 
 	 * @throws Exception 
 	 */
-	/**
-	boolean createSystemConstant(String name, double value) throws Exception {
-		if (logger != null) { logger.log("in createSystemConstant"); }
+	
+	boolean createSystemImplementation(String name, String value) throws Exception {
+		if (logger != null) { logger.log("in createSystemImplementation"); }
 		
 		if (s3 == null) {
 			logger.log("attach to S3 request");
@@ -72,13 +71,16 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 		omd.setContentLength(contents.length);
 		
 		// makes the object publicly visible
-		PutObjectResult res = s3.putObject(new PutObjectRequest("calctest", bucket + name, bais, omd)
+		PutObjectResult res = s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name, bais, omd)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
+		
+		//System.out.print(res);
 		
 		// if we ever get here, then whole thing was stored
 		return true;
+		
 	}
-	**/
+
 	@Override 
 	public CreateImplementationResponse handleRequest(CreateImplementationRequest req, Context context)  {
 		logger = context.getLogger();
@@ -86,20 +88,17 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 		CreateImplementationResponse response;
 		try {
-			/**
-			if (req.system) {
-				if (createSystemConstant(req.name, req.value)) {
-					response = new CreateClassificationResponse(req.name);
+				if (createSystemImplementation(req.implementationFile, req.value)) {
+					response = new CreateImplementationResponse(req.implementationFile);
 				} else {
-					response = new CreateClassificationResponse(req.name, 422);
+					response = new CreateImplementationResponse(req.implementationFile, 422);
 				}
-			} else {
-			**/
-			if (createImplementation(req.implementationFile, req.idImplementation, req.algorithmId)) {
-				response = new CreateImplementationResponse(req.implementationFile);
-			} else {
-				response = new CreateImplementationResponse(req.implementationFile, 422);
-			}
+
+				if (createImplementation(req.implementationFile, req.idImplementation, req.algorithmId, req.value)) {
+					response = new CreateImplementationResponse(req.implementationFile);
+				} else {
+					response = new CreateImplementationResponse(req.implementationFile, 422);
+				}
 		} catch (Exception e) {
 			response = new CreateImplementationResponse("Unable to create implementation: " + req.implementationFile + "(" + e.getMessage() + ")", 400);
 		}

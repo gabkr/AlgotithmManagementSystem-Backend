@@ -7,20 +7,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import cs509.thalassa.demo.model.Implementation;
 
-/**
+
+/*
  * Note that CAPITALIZATION matters regarding the table name. If you create with 
  * a capital "Constants" then it must be "Constants" in the SQL queries.
  */
 public class ImplementationDAO { 
-
+	private AmazonS3 s3 = null;
 	java.sql.Connection conn;
 	LambdaLogger logger;
 	final String tblName = "Implementation";   // Exact capitalization
@@ -34,6 +39,7 @@ public class ImplementationDAO {
     	}
     }
     
+    
     public Implementation getImplementation(String idImplementation) throws Exception {
         
         try {
@@ -41,8 +47,7 @@ public class ImplementationDAO {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation=?;");
             ps.setString(1,  idImplementation);
             ResultSet resultSet = ps.executeQuery();
-            
-            while (resultSet.next()) {
+        	while (resultSet.next()) {
                 implementation = generateImplementation(resultSet);
             }
             resultSet.close();
@@ -53,6 +58,35 @@ public class ImplementationDAO {
         } catch (Exception e) {
         	e.printStackTrace();
             throw new Exception("Failed in getting algorithm: " + e.getMessage());
+        }
+    }
+    
+    public boolean addImplementation(Implementation implementation) throws Exception {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation = ?;");
+            ps.setString(1, implementation.idImplementation);
+            ResultSet resultSet = ps.executeQuery();
+            
+            // already present?
+            while (resultSet.next()) {
+                Implementation c = generateImplementation(resultSet);
+                resultSet.close();
+                return false;
+            }
+            
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (idImplementation,algorithmId,implementationFile,s3Url) values(?,?,?,?);");
+            ps.setString(1,  implementation.idImplementation);
+            ps.setString(2,  implementation.algorithmId);
+            ps.setString(3,  implementation.implementationFile);
+            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", implementation.implementationFile).toString();
+        	System.out.print(s3loc);
+            ps.setString(4, s3loc);
+            ps.execute();
+            return true;
+
+        } catch (Exception e) {
+            throw new Exception("Failed to insert implementation: " + e.getMessage());
         }
     }
 
@@ -112,7 +146,8 @@ public class ImplementationDAO {
         }
     }
 	**/
-
+    
+    /**
     public boolean addImplementation(Implementation implementation) throws Exception {
     	Path dir = Paths.get(implementation.implementationFile);
     	System.out.print(dir);
@@ -152,6 +187,7 @@ public class ImplementationDAO {
             throw new Exception("Failed to insert algorithm: " + e.getMessage());
         }
     }
+    **/
     
     /**
     public List<Classification> getAllClassifications() throws Exception {
@@ -180,6 +216,7 @@ public class ImplementationDAO {
         String implementationFile  = resultSet.getString("implementationFile");
         String idImplementation = resultSet.getString("idImplementation");
         String algorithmId = resultSet.getString("algorithmId");
-        return new Implementation (implementationFile, idImplementation, algorithmId);
+        String value = resultSet.getString("value");
+        return new Implementation (implementationFile, idImplementation, algorithmId, value);
     }
 }

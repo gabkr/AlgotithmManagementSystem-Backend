@@ -5,23 +5,17 @@ public class Implementation {
 	public final String idImplementation;
 	public final boolean system;      // when TRUE this is actually stored in S3 bucket
 	public final String algorithmId;
+	public final String value;
 	
-	public Implementation (String implementationFile, String idImplementation, String algorithmId) {
+	public Implementation (String implementationFile, String idImplementation, String algorithmId, String value) {
 		this.implementationFile = implementationFile;
 		this.idImplementation = idImplementation;
 		this.algorithmId = algorithmId;
-		this.system = false;
-	}
-
-		/**
-	public Classification (String parent, double child, boolean system) {
-		this.parent = parent;
-		this.child = child;
-		this.system = system;
+		this.system = true;
+		this.value = value;
 	}
 	
 	public boolean getSystem() { return system; }
-	**/
 	
 	/**
 	 * Equality of Constants determined by name alone.
@@ -40,6 +34,6 @@ public class Implementation {
 	public String toString() {
 		String sysString = "";
 		if (system) { sysString = " (system)"; }
-		return "[" + implementationFile+ " " + idImplementation+ " " + algorithmId + sysString + "]";
+		return "[" + implementationFile+ " " + idImplementation+ " " + algorithmId + value + sysString + "]";
 	}
 }
