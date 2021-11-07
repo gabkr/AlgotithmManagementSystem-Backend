@@ -71,7 +71,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 		omd.setContentLength(contents.length);
 		
 		// makes the object publicly visible
-		PutObjectResult res = s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name, bais, omd)
+		PutObjectResult res = s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name+".txt", bais, omd)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
 		
 		//System.out.print(res);

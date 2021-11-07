@@ -7,28 +7,28 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.CreateImplementationRequest;
-import cs509.thalassa.demo.http.CreateImplementationResponse;
+import cs509.thalassa.demo.http.ListImplementationRequest;
+import cs509.thalassa.demo.http.AllImplementationsResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateImplementationHandlerTest extends LambdaTest {
+public class ListAllImplementationsHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	CreateImplementationHandler handler = new CreateImplementationHandler();
-    	CreateImplementationRequest req = new Gson().fromJson(incoming, CreateImplementationRequest.class);
+    	ListAllImplementationsHandler handler = new ListAllImplementationsHandler();
+    	ListImplementationRequest req = new Gson().fromJson(incoming, ListImplementationRequest.class);
        
-        CreateImplementationResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(200, resp.httpCode);
+        AllImplementationsResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(200, resp.statusCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	CreateImplementationHandler handler = new CreateImplementationHandler();
-    	CreateImplementationRequest req = new Gson().fromJson(incoming, CreateImplementationRequest.class);
+    	ListAllImplementationsHandler handler = new ListAllImplementationsHandler();
+    	ListImplementationRequest req = new Gson().fromJson(incoming, ListImplementationRequest.class);
 
-    	CreateImplementationResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(failureCode, resp.httpCode);
+    	AllImplementationsResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(failureCode, resp.statusCode);
     }
 
    
@@ -38,7 +38,7 @@ public class CreateImplementationHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	CreateImplementationRequest ccr = new CreateImplementationRequest("Implementation9", "9","1","This is a sample implementation");
+    	ListImplementationRequest ccr = new ListImplementationRequest("1");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

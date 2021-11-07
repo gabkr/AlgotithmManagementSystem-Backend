@@ -6,6 +6,7 @@ public class Implementation {
 	public final boolean system;      // when TRUE this is actually stored in S3 bucket
 	public final String algorithmId;
 	public final String value;
+	public final String s3Url;
 	
 	public Implementation (String implementationFile, String idImplementation, String algorithmId, String value) {
 		this.implementationFile = implementationFile;
@@ -13,6 +14,16 @@ public class Implementation {
 		this.algorithmId = algorithmId;
 		this.system = true;
 		this.value = value;
+		this.s3Url = null;
+	}
+	
+	public Implementation (String implementationFile, String idImplementation, String algorithmId, String value, String s3Url) {
+		this.implementationFile = implementationFile;
+		this.idImplementation = idImplementation;
+		this.algorithmId = algorithmId;
+		this.system = true;
+		this.value = "";
+		this.s3Url = s3Url;
 	}
 	
 	public boolean getSystem() { return system; }

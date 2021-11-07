@@ -3,14 +3,6 @@ package cs509.thalassa.demo.db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.io.File;
-import java.io.FileReader;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -19,12 +11,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import cs509.thalassa.demo.model.Implementation;
 
-
-/*
+/**
  * Note that CAPITALIZATION matters regarding the table name. If you create with 
  * a capital "Constants" then it must be "Constants" in the SQL queries.
  */
 public class ImplementationDAO { 
+	
 	private AmazonS3 s3 = null;
 	java.sql.Connection conn;
 	LambdaLogger logger;
@@ -38,16 +30,21 @@ public class ImplementationDAO {
     		conn = null;
     	}
     }
-    
-    
-    public Implementation getImplementation(String idImplementation) throws Exception {
+
+    public Implementation getImplementation(String id) throws Exception {
         
         try {
-            Implementation  implementation = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation=?;");
-            ps.setString(1,  idImplementation);
+            Implementation implementation = null;
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE algorithmId=?;");
+//            PreparedStatement ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
+//    				"from " + tblName + " c1\n" + 
+//    				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
+//    				"         LEFT JOIN " + tblAlgorithmName + " A on c1.id = A.parentId\n" + 
+//    				"where c1.id=? group by c1.id;");
+            ps.setString(1,  id);
             ResultSet resultSet = ps.executeQuery();
-        	while (resultSet.next()) {
+            
+            while (resultSet.next()) {
                 implementation = generateImplementation(resultSet);
             }
             resultSet.close();
@@ -57,64 +54,37 @@ public class ImplementationDAO {
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in getting algorithm: " + e.getMessage());
+            throw new Exception("Failed in getting implementation: " + e.getMessage());
         }
     }
+
     
-    public boolean addImplementation(Implementation implementation) throws Exception {
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation = ?;");
-            ps.setString(1, implementation.idImplementation);
-            ResultSet resultSet = ps.executeQuery();
-            
-            // already present?
-            while (resultSet.next()) {
-                Implementation c = generateImplementation(resultSet);
-                resultSet.close();
-                return false;
-            }
-            
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (idImplementation,algorithmId,implementationFile,s3Url) values(?,?,?,?);");
-            ps.setString(1,  implementation.idImplementation);
-            ps.setString(2,  implementation.algorithmId);
-            ps.setString(3,  implementation.implementationFile);
-            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", implementation.implementationFile).toString();
-        	System.out.print(s3loc);
-            ps.setString(4, s3loc);
-            ps.execute();
-            return true;
-
-        } catch (Exception e) {
-            throw new Exception("Failed to insert implementation: " + e.getMessage());
-        }
-    }
-
-    /**
-    public List<Algorithm> getRelatedAlgorithms(String parentId) throws Exception {
+    public List<Implementation> getRelatedImplementations(String parentAlgorithm) throws Exception {
         
-    	List<Algorithm> allAlgorithms = new ArrayList<>();
+    	List<Implementation> allImplementations = new ArrayList<>();
     	
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentId=?;");
-            ps.setString(1,  parentId);
-            ResultSet resultSet = ps.executeQuery();
+        	PreparedStatement ps;
+                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE algorithmId=?;");
+                ps.setString(1,  parentAlgorithm);        		
+
+        	ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
-            	Algorithm c = generateAlgorithm(resultSet);
-                allAlgorithms.add(c);
+            	Implementation c = generateImplementationGet(resultSet);
+                allImplementations.add(c);
             }
             resultSet.close();
             ps.close();
             
-            return allAlgorithms;
+            return allImplementations;
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in getting algorithm: " + e.getMessage());
+            throw new Exception("Failed in getting implementation: " + e.getMessage());
         }
     }
-    **/
+    
     /**
     public boolean updateClassification(Classification classification) throws Exception {
         try {
@@ -146,15 +116,10 @@ public class ImplementationDAO {
         }
     }
 	**/
-    
-    /**
+
     public boolean addImplementation(Implementation implementation) throws Exception {
-    	Path dir = Paths.get(implementation.implementationFile);
-    	System.out.print(dir);
-    	try {
-        	Stream<Path> list = Files.list(dir);
-        	//System.out.print(list);
-        	PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation = ?;");
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation = ?;");
             ps.setString(1, implementation.idImplementation);
             ResultSet resultSet = ps.executeQuery();
             
@@ -165,30 +130,22 @@ public class ImplementationDAO {
                 return false;
             }
             
-            List<Path> pathList = list.collect(Collectors.toList());
-            for (Path path : pathList) {
-			File file = path.toFile();
-			String fileName = file.getName();
-			long fileLength = file.length();
-			long fileLengthInKb=fileLength/1024;
-			String lngth=String.valueOf(fileLengthInKb);
-            
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (idImplementation,algorithmId,implementationName,implementationContent,"
-            		+ "implementation_size_kb) values(?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (idImplementation,algorithmId,implementationFile,s3Url) values(?,?,?,?);");
             ps.setString(1,  implementation.idImplementation);
             ps.setString(2,  implementation.algorithmId);
-            ps.setString(3,  fileName.substring(fileName.lastIndexOf(".")+1));
-            ps.setCharacterStream(4, new FileReader(file), fileLength);
-            ps.setString(5,  lngth);
-            ps.execute();}
+            ps.setString(3,  implementation.implementationFile);
+            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.implementationFile+".txt").toString();
+        	System.out.print(s3loc);
+            ps.setString(4, s3loc);
+            ps.execute();
             return true;
 
         } catch (Exception e) {
-            throw new Exception("Failed to insert algorithm: " + e.getMessage());
+            throw new Exception("Failed to insert implementation: " + e.getMessage());
         }
     }
-    **/
-    
+
     /**
     public List<Classification> getAllClassifications() throws Exception {
         
@@ -217,6 +174,16 @@ public class ImplementationDAO {
         String idImplementation = resultSet.getString("idImplementation");
         String algorithmId = resultSet.getString("algorithmId");
         String value = resultSet.getString("value");
+
         return new Implementation (implementationFile, idImplementation, algorithmId, value);
+    }
+    
+    private Implementation generateImplementationGet(ResultSet resultSet) throws Exception {
+        String implementationFile  = resultSet.getString("implementationFile");
+        String idImplementation = resultSet.getString("idImplementation");
+        String algorithmId = resultSet.getString("algorithmId");
+        String s3Url = resultSet.getString("s3Url");
+
+        return new Implementation (implementationFile, idImplementation, algorithmId, "Refer s3 Url", s3Url);
     }
 }
