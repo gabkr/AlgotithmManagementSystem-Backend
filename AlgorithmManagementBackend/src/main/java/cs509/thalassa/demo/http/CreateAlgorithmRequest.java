@@ -1,5 +1,7 @@
 package cs509.thalassa.demo.http;
 
+import java.util.UUID;
+
 public class CreateAlgorithmRequest {
 	public String nameAlgorithm;
 	public String idAlgorithm;
@@ -19,11 +21,12 @@ public class CreateAlgorithmRequest {
 	public void setParentId(String c) { this.parentId = c; }
 	
 	public CreateAlgorithmRequest() {
+		this.idAlgorithm = UUID.randomUUID().toString();
 	}
 	
-	public CreateAlgorithmRequest (String n, String id, String parentId) {
+	public CreateAlgorithmRequest (String n, String parentId) {
 		this.nameAlgorithm = n;
-		this.idAlgorithm = id;
+		this.idAlgorithm = UUID.randomUUID().toString();
 		this.parentId = parentId;
 	}
 	
