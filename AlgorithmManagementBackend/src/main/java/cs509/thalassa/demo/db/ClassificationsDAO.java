@@ -32,7 +32,7 @@ public class ClassificationsDAO {
         
         try {
             Classification classification = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE classificationID=?;");
 //            PreparedStatement ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
 //    				"from " + tblName + " c1\n" + 
 //    				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
@@ -68,10 +68,10 @@ public class ClassificationsDAO {
 //        				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
 //        				"         LEFT JOIN " + tblAlgorithmName + " A on c1.id = A.parentId\n" + 
 //        				"where c1.parentClassification=? group by c1.id;");
-                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification=?;");
+                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ParentID=?;");
                 ps.setString(1,  parentClassification);        		
         	} else {
-                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentClassification is NULL;");
+                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ParentID is NULL;");
 //        		ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
 //        				"from " + tblName + " c1\n" + 
 //        				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
@@ -130,7 +130,7 @@ public class ClassificationsDAO {
 
     public boolean addClassification(Classification classification) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameClassification = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ClassificationName = ?;");
             ps.setString(1, classification.nameClassification);
             ResultSet resultSet = ps.executeQuery();
             
@@ -141,7 +141,7 @@ public class ClassificationsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (nameClassification,id,parentClassification) values(?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (ClassificationName,ClassificationID,ParentID) values(?,?,?);");
             ps.setString(1,  classification.nameClassification);
             ps.setString(2,  classification.id);
             ps.setString(3,  classification.parentClassification);
@@ -178,9 +178,9 @@ public class ClassificationsDAO {
 	**/
 	
     private Classification generateClassification(ResultSet resultSet) throws Exception {
-        String nameClassification  = resultSet.getString("nameClassification");
-        String id = resultSet.getString("id");
-        String parentClassification = resultSet.getString("parentClassification");
+        String nameClassification  = resultSet.getString("ClassificationName");
+        String id = resultSet.getString("ClassificationID");
+        String parentClassification = resultSet.getString("ParentID");
 //        int childClassificationsCount = resultSet.getInt("childClassificationsCount");
 //        int algorithmsCount = resultSet.getInt("algorithmsCount");
 

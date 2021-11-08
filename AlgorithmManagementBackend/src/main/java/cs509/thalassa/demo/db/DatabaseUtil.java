@@ -24,8 +24,8 @@ public class DatabaseUtil {
 	public final static String rdsMySqlDatabasePort = "3306";
 	public final static String multiQueries = "?allowMultiQueries=true";
 	   
-	public final static String dbName = "sys";           // Whatever Schema you created in tutorial.
-	public final static String testingName = "sys";       // used for testing (also default created)
+	public final static String dbName = "amsProd";           // Whatever Schema you created in tutorial.
+	public final static String testingName = "amsProd";       // used for testing (also default created)
 	
 	// pooled across all usages.
 	static Connection conn;

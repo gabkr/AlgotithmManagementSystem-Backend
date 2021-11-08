@@ -35,7 +35,7 @@ public class ImplementationDAO {
         
         try {
             Implementation implementation = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE algorithmId=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmID=?;");
 //            PreparedStatement ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
 //    				"from " + tblName + " c1\n" + 
 //    				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
@@ -65,7 +65,7 @@ public class ImplementationDAO {
     	
         try {
         	PreparedStatement ps;
-                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE algorithmId=?;");
+                ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmID=?;");
                 ps.setString(1,  parentAlgorithm);        		
 
         	ResultSet resultSet = ps.executeQuery();
@@ -119,7 +119,7 @@ public class ImplementationDAO {
 
     public boolean addImplementation(Implementation implementation) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE idImplementation = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ImplementationID = ?;");
             ps.setString(1, implementation.idImplementation);
             ResultSet resultSet = ps.executeQuery();
             
@@ -130,7 +130,7 @@ public class ImplementationDAO {
                 return false;
             }
             
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (idImplementation,algorithmId,implementationFile,s3Url) values(?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (ImplementationID,AlgorithmID,implementationName,S3Url) values(?,?,?,?);");
             ps.setString(1,  implementation.idImplementation);
             ps.setString(2,  implementation.algorithmId);
             ps.setString(3,  implementation.implementationFile);
@@ -170,19 +170,19 @@ public class ImplementationDAO {
 	**/
 	
     private Implementation generateImplementation(ResultSet resultSet) throws Exception {
-        String implementationFile  = resultSet.getString("implementationFile");
-        String idImplementation = resultSet.getString("idImplementation");
-        String algorithmId = resultSet.getString("algorithmId");
+        String implementationFile  = resultSet.getString("implementationName");
+        String idImplementation = resultSet.getString("ImplementationID");
+        String algorithmId = resultSet.getString("algorithmID");
         String value = resultSet.getString("value");
 
         return new Implementation (implementationFile, idImplementation, algorithmId, value);
     }
     
     private Implementation generateImplementationGet(ResultSet resultSet) throws Exception {
-        String implementationFile  = resultSet.getString("implementationFile");
-        String idImplementation = resultSet.getString("idImplementation");
-        String algorithmId = resultSet.getString("algorithmId");
-        String s3Url = resultSet.getString("s3Url");
+        String implementationFile  = resultSet.getString("implementationName");
+        String idImplementation = resultSet.getString("ImplementationID");
+        String algorithmId = resultSet.getString("AlgorithmID");
+        String s3Url = resultSet.getString("S3Url");
 
         return new Implementation (implementationFile, idImplementation, algorithmId, "Refer s3 Url", s3Url);
     }

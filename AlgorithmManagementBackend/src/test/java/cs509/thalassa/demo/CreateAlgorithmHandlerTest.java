@@ -38,7 +38,7 @@ public class CreateAlgorithmHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	CreateAlgorithmRequest ccr = new CreateAlgorithmRequest("Algorithm4","1");
+    	CreateAlgorithmRequest ccr = new CreateAlgorithmRequest("Algorithm2","2");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

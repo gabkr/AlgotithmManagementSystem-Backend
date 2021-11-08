@@ -31,7 +31,7 @@ public class AlgorithmsDAO {
         
         try {
             Algorithm algorithm = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameAlgorithm=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmName=?;");
             ps.setString(1,  nameAlgorithm);
             ResultSet resultSet = ps.executeQuery();
             
@@ -55,7 +55,7 @@ public class AlgorithmsDAO {
     	List<Algorithm> allAlgorithms = new ArrayList<>();
     	
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE parentId=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ClassificationID=?;");
             ps.setString(1,  parentId);
             ResultSet resultSet = ps.executeQuery();
             
@@ -108,7 +108,7 @@ public class AlgorithmsDAO {
 
     public boolean addAlgorithm(Algorithm algorithm) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE nameAlgorithm = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmName = ?;");
             ps.setString(1, algorithm.nameAlgorithm);
             ResultSet resultSet = ps.executeQuery();
             
@@ -119,7 +119,7 @@ public class AlgorithmsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (nameAlgorithm,idAlgorithm,parentId) values(?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO " + tblName + " (AlgorithmName,AlgorithmID,ClassificationID) values(?,?,?);");
             ps.setString(1,  algorithm.nameAlgorithm);
             ps.setString(2,  algorithm.idAlgorithm);
             ps.setString(3,  algorithm.parentId);
@@ -155,9 +155,9 @@ public class AlgorithmsDAO {
 	**/
 	
     private Algorithm generateAlgorithm(ResultSet resultSet) throws Exception {
-        String nameAlgorithm  = resultSet.getString("nameAlgorithm");
-        String idAlgorithm = resultSet.getString("idAlgorithm");
-        String parentId = resultSet.getString("parentId");
+        String nameAlgorithm  = resultSet.getString("AlgorithmName");
+        String idAlgorithm = resultSet.getString("AlgorithmID");
+        String parentId = resultSet.getString("ClassificationID");
         return new Algorithm (nameAlgorithm, idAlgorithm, parentId);
     }
 }
