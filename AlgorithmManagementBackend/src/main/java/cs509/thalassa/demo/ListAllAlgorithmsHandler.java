@@ -23,7 +23,7 @@ import cs509.thalassa.demo.model.Algorithm;
 /**
  * Eliminated need to work with JSON
  */
-public class ListAllAlgorithmssHandler implements RequestHandler<ListAlgorithmRequest,AllAlgorithmsResponse> {
+public class ListAllAlgorithmsHandler implements RequestHandler<ListAlgorithmRequest, AllAlgorithmsResponse> {
 
 	public LambdaLogger logger;
 
@@ -37,7 +37,7 @@ public class ListAllAlgorithmssHandler implements RequestHandler<ListAlgorithmRe
 	 * 
 	 * @throws Exception 
 	 */
-	List<Algortihm> getAlgorithhms(String parentId) throws Exception {
+	List<Algorithm> getAlgorithms(String parentId) throws Exception {
 		logger.log("in getImplementations");
 		AlgorithmsDAO dao = new AlgorithmsDAO(logger);
 		
@@ -45,7 +45,7 @@ public class ListAllAlgorithmssHandler implements RequestHandler<ListAlgorithmRe
 	}
 	
 	// I am leaving in this S3 code so it can be a LAST RESORT if the constant is not in the database
-	private AmazonS3 s3 = null;
+//	private AmazonS3 s3 = null;
 	
 	/**
 	 * Retrieve all SYSTEM constants. This code is surprisingly dangerous since there could
@@ -104,13 +104,13 @@ public class ListAllAlgorithmssHandler implements RequestHandler<ListAlgorithmRe
 	public AllAlgorithmsResponse handleRequest(ListAlgorithmRequest req, Context context)  {
 		logger = context.getLogger();
 		logger.log("Loading Java Lambda handler to list all algorithms");
-		logger.log("ParentAlgorithmId: " + req.parentId);
+		logger.log("classificationId: " + req.classificationId);
 		
 		AllAlgorithmsResponse response;
 		try {
 			// get all user defined constants AND system-defined constants.
 			// Note that user defined constants override system-defined constants.
-			List<Algorithm> list = getAlgorithms(req.parentId);
+			List<Algorithm> list = getAlgorithms(req.classificationId);
 			/**
 			for (Constant c : systemConstants()) {
 				if (!list.contains(c)) {

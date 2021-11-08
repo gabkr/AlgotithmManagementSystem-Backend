@@ -1,19 +1,19 @@
 package cs509.thalassa.demo.http;
 
 public class ListAlgorithmRequest {
-	public String parentAlgorithm;
+	public String classificationId;
 	
-	public String getParentAlgorithm() { return parentAlgorithm; }
-	public void setParentAlgorithm(String c) { this.parentAlgorithm = c; }
+	public String getClassificationId() { return classificationId; }
+	public void setClassificationId(String c) { this.classificationId = c; }
 	
 	public ListAlgorithmRequest() {
 	}
 	
-	public ListAlgorithmRequest (String parentId) {
-		this.parentAlgorithm = parentId;
+	public ListAlgorithmRequest (String classificationId) {
+		this.classificationId = classificationId;
 	}
 	
 	public String toString() {
-		return "ListClassification(" + parentClassification + ")";
+		return "ListClassification(" + classificationId + ")";
 	}
 }

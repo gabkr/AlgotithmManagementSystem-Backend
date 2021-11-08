@@ -6,7 +6,7 @@ import java.util.List;
 import cs509.thalassa.demo.model.Algorithm;
 
 public class AllAlgorithmsResponse {
-	public final List<Algorithms> list;
+	public final List<Algorithm> list;
 	public final int statusCode;
 	public final String error;
 	
@@ -23,7 +23,7 @@ public class AllAlgorithmsResponse {
 	}
 	
 	public String toString() {
-		if (list == null) { return "EmptyClassifications"; }
+		if (list == null) { return "Empty Algorithms"; }
 		return "AllAlgorithms(" + list.size() + ")";
 	}
 }

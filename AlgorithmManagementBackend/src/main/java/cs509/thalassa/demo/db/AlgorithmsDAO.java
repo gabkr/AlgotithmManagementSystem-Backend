@@ -109,7 +109,7 @@ public class AlgorithmsDAO {
     public boolean addAlgorithm(Algorithm algorithm) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmName = ?;");
-            ps.setString(1, algorithm.nameAlgorithm);
+            ps.setString(1, algorithm.name);
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
@@ -120,9 +120,9 @@ public class AlgorithmsDAO {
             }
 
             ps = conn.prepareStatement("INSERT INTO " + tblName + " (AlgorithmName,AlgorithmID,ClassificationID) values(?,?,?);");
-            ps.setString(1,  algorithm.nameAlgorithm);
-            ps.setString(2,  algorithm.idAlgorithm);
-            ps.setString(3,  algorithm.parentId);
+            ps.setString(1,  algorithm.name);
+            ps.setString(2,  algorithm.id);
+            ps.setString(3,  algorithm.classificationId);
             ps.execute();
             return true;
 
@@ -157,7 +157,7 @@ public class AlgorithmsDAO {
     private Algorithm generateAlgorithm(ResultSet resultSet) throws Exception {
         String nameAlgorithm  = resultSet.getString("AlgorithmName");
         String idAlgorithm = resultSet.getString("AlgorithmID");
-        String parentId = resultSet.getString("ClassificationID");
-        return new Algorithm (nameAlgorithm, idAlgorithm, parentId);
+        String classificationId = resultSet.getString("ClassificationID");
+        return new Algorithm(idAlgorithm, nameAlgorithm, classificationId);
     }
 }
