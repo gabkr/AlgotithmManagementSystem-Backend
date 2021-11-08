@@ -42,7 +42,7 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 		
 		// check if present
 		Algorithm exist = dao.getAlgorithm(nameAlgorithm);
-		Algorithm algorithm = new Algorithm (nameAlgorithm, idAlgorithm, parentId);
+		Algorithm algorithm = new Algorithm(idAlgorithm, nameAlgorithm, parentId);
 		if (exist == null) {
 			return dao.addAlgorithm(algorithm);
 		} else {
@@ -83,6 +83,9 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 	public CreateAlgorithmResponse handleRequest(CreateAlgorithmRequest req, Context context)  {
 		logger = context.getLogger();
 		logger.log(req.toString());
+		logger.log("ID" + req.idAlgorithm);
+		logger.log("Name" + req.nameAlgorithm);
+		logger.log("Parent" + req.parentId);
 
 		CreateAlgorithmResponse response;
 		try {
@@ -96,7 +99,7 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 			} else {
 			**/
 			if (createAlgorithm(req.nameAlgorithm, req.idAlgorithm, req.parentId)) {
-				response = new CreateAlgorithmResponse(req.nameAlgorithm);
+				response = new CreateAlgorithmResponse(req.idAlgorithm);
 			} else {
 				response = new CreateAlgorithmResponse(req.nameAlgorithm, 422);
 			}
