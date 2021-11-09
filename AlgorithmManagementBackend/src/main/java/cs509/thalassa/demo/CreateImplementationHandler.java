@@ -95,7 +95,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 				}
 
 				if (createImplementation(req.implementationFile, req.idImplementation, req.algorithmId, req.value)) {
-					response = new CreateImplementationResponse(req.implementationFile);
+					response = new CreateImplementationResponse(req.idImplementation);
 				} else {
 					response = new CreateImplementationResponse(req.implementationFile, 422);
 				}
