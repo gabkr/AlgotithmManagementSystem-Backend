@@ -88,19 +88,19 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 		CreateImplementationResponse response;
 		try {
-				if (createSystemImplementation(req.implementationFile, req.value)) {
-					response = new CreateImplementationResponse(req.implementationFile);
+				if (createSystemImplementation(req.idImplementation, req.value)) {
+					response = new CreateImplementationResponse(req.idImplementation);
 				} else {
-					response = new CreateImplementationResponse(req.implementationFile, 422);
+					response = new CreateImplementationResponse(req.idImplementation, 422);
 				}
 
 				if (createImplementation(req.implementationFile, req.idImplementation, req.algorithmId, req.value)) {
 					response = new CreateImplementationResponse(req.idImplementation);
 				} else {
-					response = new CreateImplementationResponse(req.implementationFile, 422);
+					response = new CreateImplementationResponse(req.idImplementation, 422);
 				}
 		} catch (Exception e) {
-			response = new CreateImplementationResponse("Unable to create implementation: " + req.implementationFile + "(" + e.getMessage() + ")", 400);
+			response = new CreateImplementationResponse("Unable to create implementation: " + req.idImplementation + "(" + e.getMessage() + ")", 400);
 		}
 
 		return response;
