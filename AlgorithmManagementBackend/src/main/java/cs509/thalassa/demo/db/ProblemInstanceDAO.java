@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
+import cs509.thalassa.demo.model.Algorithm;
 import cs509.thalassa.demo.model.ProblemInstance;
 
 public class ProblemInstanceDAO {
@@ -41,6 +42,20 @@ public class ProblemInstanceDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
             throw new Exception("Failed in getting problemInstances: " + e.getMessage());
+		}
+	}
+	
+	public boolean addProblemInstance(ProblemInstance problemInstance) throws Exception {
+		try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (AlgorithmID, ProblemInstanceID, input) values(?,?,?);");
+            ps.setString(1,  problemInstance.algorithmId);
+            ps.setString(2,  problemInstance.id);
+            ps.setString(3,  problemInstance.input);
+            ps.execute();
+            return true;
+
+		} catch (Exception e) {
+			throw new Exception("Failed to insert problem instance" + e.getMessage());
 		}
 	}
 
