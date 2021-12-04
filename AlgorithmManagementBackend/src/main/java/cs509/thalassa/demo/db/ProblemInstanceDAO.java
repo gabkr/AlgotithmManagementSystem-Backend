@@ -58,6 +58,18 @@ public class ProblemInstanceDAO {
 			throw new Exception("Failed to insert problem instance" + e.getMessage());
 		}
 	}
+	
+	public boolean deleteProblemInstance(String problemInstanceId) throws Exception {
+		try {
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE ProblemInstanceId=?;");
+			ps.setString(1, problemInstanceId);
+			ps.execute();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Failed to delete problemInstance: " + e.getMessage()); 
+		}
+	}
 
 	private ProblemInstance generateProblemInstance(ResultSet resultSet) throws Exception {
 		String id = resultSet.getString("ProblemInstanceId");
