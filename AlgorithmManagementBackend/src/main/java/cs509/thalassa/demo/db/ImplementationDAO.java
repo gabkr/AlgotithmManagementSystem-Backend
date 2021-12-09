@@ -135,7 +135,7 @@ public class ImplementationDAO {
             ps.setString(2,  implementation.algorithmId);
             ps.setString(3,  implementation.implementationFile);
             s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.implementationFile+".txt").toString();
+        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.idImplementation+".txt").toString();
         	System.out.print(s3loc);
             ps.setString(4, s3loc);
             ps.execute();
