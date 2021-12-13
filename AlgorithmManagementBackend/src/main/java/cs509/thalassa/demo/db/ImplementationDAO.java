@@ -133,11 +133,13 @@ public class ImplementationDAO {
             ps = conn.prepareStatement("INSERT INTO " + tblName + " (ImplementationID,AlgorithmID,implementationName,S3Url) values(?,?,?,?);");
             ps.setString(1,  implementation.idImplementation);
             ps.setString(2,  implementation.algorithmId);
-            ps.setString(3,  implementation.implementationFile);
-            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.implementationFile+".txt").toString();
-        	System.out.print(s3loc);
-            ps.setString(4, s3loc);
+            ps.setString(3,  implementation.implementationName);
+//            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+//        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.idImplementation+implemention).toString();
+//
+//        	System.out.print(s3loc);
+//            ps.setString(4, s3loc);
+            ps.setNString(4, implementation.s3Url);
             ps.execute();
             return true;
 
@@ -170,12 +172,12 @@ public class ImplementationDAO {
 	**/
 	
     private Implementation generateImplementation(ResultSet resultSet) throws Exception {
-        String implementationFile  = resultSet.getString("implementationName");
+        String implementationName  = resultSet.getString("implementationName");
         String idImplementation = resultSet.getString("ImplementationID");
         String algorithmId = resultSet.getString("algorithmID");
         String value = resultSet.getString("value");
 
-        return new Implementation (implementationFile, idImplementation, algorithmId, value);
+        return new Implementation(implementationName, idImplementation, algorithmId, value);
     }
     
     private Implementation generateImplementationGet(ResultSet resultSet) throws Exception {

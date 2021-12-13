@@ -1,6 +1,7 @@
 package cs509.thalassa.demo;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -35,13 +36,15 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 	 * 
 	 * @throws Exception 
 	 */
-	boolean createImplementation(String implementationFile, String idImplementation, String algorithmId, String value) throws Exception { 
+	boolean createImplementation(String implementationName, String idImplementation, String algorithmId, String value, boolean isUpload, String implementationFileFormat, String implementationMimeType) throws Exception { 
 		if (logger != null) { logger.log("in createImplementation"); }
 		ImplementationDAO dao = new ImplementationDAO(logger);
 		
 		// check if present
 		Implementation exist = dao.getImplementation(idImplementation);
-		Implementation implementation = new Implementation (implementationFile, idImplementation, algorithmId, value);
+		
+		String s3Path = REAL_BUCKET + idImplementation + "." + implementationFileFormat;
+		Implementation implementation = new Implementation(implementationName, idImplementation, algorithmId, value, s3Path);
 		if (exist == null) {
 			return dao.addImplementation(implementation);
 		} else {
@@ -54,7 +57,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 	 * @throws Exception 
 	 */
 	
-	boolean createSystemImplementation(String name, String value) throws Exception {
+	boolean createSystemImplementation(String name, String value, boolean isUpload, String fileFormat, String mimeType) throws Exception {
 		if (logger != null) { logger.log("in createSystemImplementation"); }
 		
 		if (s3 == null) {
@@ -65,20 +68,34 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 		String bucket = REAL_BUCKET;
 		
-		byte[] contents = ("" + value).getBytes();
-		ByteArrayInputStream bais = new ByteArrayInputStream(contents);
-		ObjectMetadata omd = new ObjectMetadata();
-		omd.setContentLength(contents.length);
-		
-		// makes the object publicly visible
-		PutObjectResult res = s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name+".txt", bais, omd)
-				.withCannedAcl(CannedAccessControlList.PublicRead));
+		if (isUpload) {
+			byte[] bI = org.apache.commons.codec.binary.Base64.decodeBase64((value.substring(value.indexOf(",")+1)).getBytes());
+			InputStream fis = new ByteArrayInputStream(bI);
+
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentLength(bI.length);
+			metadata.setContentType(mimeType);
+			metadata.setContentDisposition("attachment");
+
+			s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name + "." + fileFormat, fis, metadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+
+		} else {
+			byte[] contents = ("" + value).getBytes();
+			ByteArrayInputStream bais = new ByteArrayInputStream(contents);
+			ObjectMetadata omd = new ObjectMetadata();
+			omd.setContentDisposition("attachment");
+			omd.setContentLength(contents.length);
+			
+			// makes the object publicly visible
+			PutObjectResult res = s3.putObject(new PutObjectRequest("cs509-thalassa-algorithm-management-system", bucket + name + "." + fileFormat, bais, omd)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+		}
 		
 		//System.out.print(res);
 		
 		// if we ever get here, then whole thing was stored
 		return true;
-		
 	}
 
 	@Override 
@@ -88,13 +105,19 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 		CreateImplementationResponse response;
 		try {
-				if (createSystemImplementation(req.idImplementation, req.value)) {
-					response = new CreateImplementationResponse(req.idImplementation);
-				} else {
-					response = new CreateImplementationResponse(req.idImplementation, 422);
-				}
+			//store to s3
+			createSystemImplementation(req.idImplementation, req.value, req.isUpload, req.implementationFileFormat, req.implementationMimeType);
+			
+			
+			//----
+			
+//				if (createSystemImplementation(req.idImplementation, req.value)) {
+//					response = new CreateImplementationResponse(req.idImplementation);
+//				} else {
+//					response = new CreateImplementationResponse(req.idImplementation, 422);
+//				}
 
-				if (createImplementation(req.implementationFile, req.idImplementation, req.algorithmId, req.value)) {
+				if (createImplementation(req.implementationName, req.idImplementation, req.algorithmId, req.value, req.isUpload, req.implementationFileFormat, req.implementationMimeType)) {
 					response = new CreateImplementationResponse(req.idImplementation);
 				} else {
 					response = new CreateImplementationResponse(req.idImplementation, 422);
