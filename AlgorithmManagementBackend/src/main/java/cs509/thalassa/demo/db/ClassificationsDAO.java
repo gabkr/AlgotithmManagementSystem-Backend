@@ -96,6 +96,21 @@ public class ClassificationsDAO {
         }
     }
     
+    public boolean deleteClassification(String classificationId) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE classificationID = ?;");
+    		ps.setNString(1, classificationId);
+    		int rs = ps.executeUpdate();
+    		if(rs==0) {
+    			logger.log("Deleted:" + classificationId);
+    		}
+    	}
+    	catch (Exception e) {
+    		throw new Exception("Failed to delete classification: " + e.getMessage());
+    	}
+    	return true;
+    }
+    
     /**
     public boolean updateClassification(Classification classification) throws Exception {
         try {
@@ -176,7 +191,21 @@ public class ClassificationsDAO {
         }
     }
 	**/
-	
+	public Boolean mergeClassifications(String name, String newID, String classID1, String classID2) throws Exception{
+		try {
+			PreparedStatement ps = conn.prepareStatement("UPDATE "+ tblName +"SET ClassificationID = ?, ClassificationName = ? WHERE ClassificationID in (?,?)");
+			ps.setString(1, newID);
+			ps.setString(2, name);
+			ps.setString(3, classID1);
+			ps.setString(4, classID2);
+			ps.executeUpdate();
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+            throw new Exception("Failed to merge classification: " + e.getMessage());
+		}
+	}
     private Classification generateClassification(ResultSet resultSet) throws Exception {
         String nameClassification  = resultSet.getString("ClassificationName");
         String id = resultSet.getString("ClassificationID");
