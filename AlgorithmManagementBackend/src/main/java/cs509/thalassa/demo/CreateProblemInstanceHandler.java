@@ -12,13 +12,13 @@ import cs509.thalassa.demo.model.ProblemInstance;
 public class CreateProblemInstanceHandler implements RequestHandler<CreateProblemInstanceRequest, CreateProblemInstanceResponse> {
 	LambdaLogger logger;
 	
-	boolean createProblemInstance(String problemInstanceId, String algorithmId, String input) throws Exception {
+	boolean createProblemInstance(String problemInstanceId, String algorithmId, String input, String name) throws Exception {
 		if (logger != null) {
 			logger.log("Create Problem Instance Handler");
 		}
 		
 		ProblemInstanceDAO dao = new ProblemInstanceDAO(logger);
-		ProblemInstance problemInstance = new ProblemInstance(problemInstanceId, algorithmId, input);
+		ProblemInstance problemInstance = new ProblemInstance(problemInstanceId, algorithmId, input, name);
 		return dao.addProblemInstance(problemInstance);
 	}
 	
@@ -28,12 +28,13 @@ public class CreateProblemInstanceHandler implements RequestHandler<CreateProble
 		logger.log(req.toString());
 		logger.log("ID" + req.problemInstanceId);
 		logger.log("AlgorithmId" + req.algorithmId);
+		logger.log("name" + req.name);
 		logger.log("input" + req.input);
 
 		CreateProblemInstanceResponse response;
 		
 		try	{
-			if (createProblemInstance(req.problemInstanceId, req.algorithmId, req.input)) {
+			if (createProblemInstance(req.problemInstanceId, req.algorithmId, req.input, req.name)) {
 				response = new CreateProblemInstanceResponse(req.problemInstanceId, "Created successfully");
 			} else {
 				response = new CreateProblemInstanceResponse("Unable to create algorithm", 422);
