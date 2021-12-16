@@ -38,7 +38,8 @@ public class CreateImplementationHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	CreateImplementationRequest ccr = new CreateImplementationRequest("Implementation","1","This is a sample implementation");
+    	CreateImplementationRequest ccr = new CreateImplementationRequest("ImplementationNew","57c64e86-0eff-43b9-a29b-bc38ea142991","This is a sample implementation",
+    			"User7","UserID7");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

@@ -172,12 +172,12 @@ public class ImplementationDAO {
 	**/
 	
     private Implementation generateImplementation(ResultSet resultSet) throws Exception {
-        String implementationName  = resultSet.getString("implementationName");
+        String implementationFile  = resultSet.getString("implementationName");
         String idImplementation = resultSet.getString("ImplementationID");
         String algorithmId = resultSet.getString("algorithmID");
         String value = resultSet.getString("value");
 
-        return new Implementation(implementationName, idImplementation, algorithmId, value);
+        return new Implementation (implementationFile, idImplementation, algorithmId, value);
     }
     
     private Implementation generateImplementationGet(ResultSet resultSet) throws Exception {

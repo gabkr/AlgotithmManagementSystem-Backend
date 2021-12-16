@@ -15,9 +15,11 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
 import cs509.thalassa.demo.db.ImplementationDAO;
+import cs509.thalassa.demo.db.UserHistoryDAO;
 import cs509.thalassa.demo.http.CreateImplementationRequest;
 import cs509.thalassa.demo.http.CreateImplementationResponse;
 import cs509.thalassa.demo.model.Implementation;
+import cs509.thalassa.demo.model.UserHistory;
 /**
  * Create a new constant and store in S3 bucket.
  */
@@ -51,6 +53,14 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 			return false;
 		}
 	}
+	
+	void createUserHistory(String implementationName, String userName, String userID, String time) throws Exception {
+		if (logger != null) { logger.log("in createImplementation"); }
+		
+		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
+		// check if present
+		UserHistory userHistory = new UserHistory(userID, userName, implementationName, time);
+		dao1.addUserHistory(userHistory);}
 	
 	/** Create S3 bucket
 	 * 
@@ -119,6 +129,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 				if (createImplementation(req.implementationName, req.idImplementation, req.algorithmId, req.value, req.isUpload, req.implementationFileFormat, req.implementationMimeType)) {
 					response = new CreateImplementationResponse(req.idImplementation);
+					createUserHistory(req.implementationName, req.userName, req.userID, req.time);
 				} else {
 					response = new CreateImplementationResponse(req.idImplementation, 422);
 				}

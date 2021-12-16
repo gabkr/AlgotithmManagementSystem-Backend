@@ -14,9 +14,11 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
 import cs509.thalassa.demo.db.ClassificationsDAO;
+import cs509.thalassa.demo.db.UserHistoryDAO;
 import cs509.thalassa.demo.http.CreateClassificationRequest;
 import cs509.thalassa.demo.http.CreateClassificationResponse;
 import cs509.thalassa.demo.model.Classification;
+import cs509.thalassa.demo.model.UserHistory;
 
 /**
  * Create a new constant and store in S3 bucket.
@@ -49,6 +51,14 @@ public class CreateClassificationHandler implements RequestHandler<CreateClassif
 			return false;
 		}
 	}
+	
+	void createUserHistory(String nameClassification, String userName, String userID, String time) throws Exception { 
+		if (logger != null) { logger.log("in createClassification"); }
+		
+		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
+		// check if present
+		UserHistory userHistory = new UserHistory(userID, userName, nameClassification, time);
+		dao1.addUserHistory(userHistory);}
 	
 	/** Create S3 bucket
 	 * 
@@ -98,6 +108,7 @@ public class CreateClassificationHandler implements RequestHandler<CreateClassif
 			if (createClassification(req.nameClassification, req.id, req.parentClassification)) {
 				logger.log("createclassification..");
 				response = new CreateClassificationResponse(req.id);
+				createUserHistory(req.nameClassification, req.userName, req.userID, req.time);
 			} else {
 				response = new CreateClassificationResponse(req.nameClassification + " already exists", 422);
 			}

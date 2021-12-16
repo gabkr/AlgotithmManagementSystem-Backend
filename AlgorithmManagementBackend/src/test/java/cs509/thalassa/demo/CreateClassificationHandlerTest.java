@@ -38,7 +38,7 @@ public class CreateClassificationHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	CreateClassificationRequest ccr = new CreateClassificationRequest("Classification3","1");
+    	CreateClassificationRequest ccr = new CreateClassificationRequest("ClassificationABCD","10daa583-9a21-41db-9830-9ea47e76b025", "User6", "UserID6");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  
         try {

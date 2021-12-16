@@ -2,10 +2,16 @@ package cs509.thalassa.demo.http;
 
 import java.util.UUID;
 
+import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
+
 public class CreateAlgorithmRequest {
 	public String nameAlgorithm;
 	public String idAlgorithm;
 	public String parentId;
+	public String userName;
+	public String userID;
+	public String  time;
 	public boolean system;
 	
 	public String getNameAlgorithm( ) { return nameAlgorithm; }
@@ -22,21 +28,17 @@ public class CreateAlgorithmRequest {
 	
 	public CreateAlgorithmRequest() {
 		this.idAlgorithm = UUID.randomUUID().toString();
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
-	public CreateAlgorithmRequest (String n, String parentId) {
+	public CreateAlgorithmRequest (String n, String parentId, String userName, String userID) {
 		this.nameAlgorithm = n;
 		this.idAlgorithm = UUID.randomUUID().toString();
 		this.parentId = parentId;
+		this.userName= userName;
+		this.userID = userID;
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
-	
-	/**
-	public CreateClassificationRequest (String n, double val, boolean system) {
-		this.parent = n;
-		this.child = val;
-		this.system = system;
-	}
-	**/
 	
 	public String toString() {
 		return "CreateAlgorithm(" + nameAlgorithm + "," + idAlgorithm + " "+ ","+ "parentId)";
