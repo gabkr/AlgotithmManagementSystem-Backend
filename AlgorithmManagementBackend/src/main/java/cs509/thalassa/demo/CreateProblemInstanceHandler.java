@@ -5,9 +5,11 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import cs509.thalassa.demo.db.ProblemInstanceDAO;
+import cs509.thalassa.demo.db.UserHistoryDAO;
 import cs509.thalassa.demo.http.CreateProblemInstanceRequest;
 import cs509.thalassa.demo.http.CreateProblemInstanceResponse;
 import cs509.thalassa.demo.model.ProblemInstance;
+import cs509.thalassa.demo.model.UserHistory;
 
 public class CreateProblemInstanceHandler implements RequestHandler<CreateProblemInstanceRequest, CreateProblemInstanceResponse> {
 	LambdaLogger logger;
@@ -21,6 +23,14 @@ public class CreateProblemInstanceHandler implements RequestHandler<CreateProble
 		ProblemInstance problemInstance = new ProblemInstance(problemInstanceId, algorithmId, input, name);
 		return dao.addProblemInstance(problemInstance);
 	}
+	
+	void createUserHistory(String name, String userName, String userID, String time) throws Exception { 
+		if (logger != null) { logger.log("in createProblemInstance"); }
+		
+		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
+		// check if present
+		UserHistory userHistory = new UserHistory(userID, userName, name, time);
+		dao1.addUserHistory(userHistory, "Create");}
 	
 	@Override
 	public CreateProblemInstanceResponse handleRequest(CreateProblemInstanceRequest req, Context context) {
@@ -36,6 +46,7 @@ public class CreateProblemInstanceHandler implements RequestHandler<CreateProble
 		try	{
 			if (createProblemInstance(req.problemInstanceId, req.algorithmId, req.input, req.name)) {
 				response = new CreateProblemInstanceResponse(req.problemInstanceId, "Created successfully");
+				createUserHistory(req.name, req.userName, req.userID, req.time);
 			} else {
 				response = new CreateProblemInstanceResponse("Unable to create algorithm", 422);
 			}
