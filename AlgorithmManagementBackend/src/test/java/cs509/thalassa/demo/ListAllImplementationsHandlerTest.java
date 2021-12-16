@@ -38,7 +38,7 @@ public class ListAllImplementationsHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ListImplementationRequest ccr = new ListImplementationRequest("1");
+    	ListImplementationRequest ccr = new ListImplementationRequest("8c997607-99d3-4446-8928-456348d08556");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

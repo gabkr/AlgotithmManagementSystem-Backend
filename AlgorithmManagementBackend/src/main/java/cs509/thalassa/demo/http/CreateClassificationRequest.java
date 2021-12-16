@@ -2,10 +2,16 @@ package cs509.thalassa.demo.http;
 
 import java.util.UUID;
 
+import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
+
 public class CreateClassificationRequest {
 	public String nameClassification;
 	public String id;
 	public String parentClassification;
+	public String userName;
+	public String userID;
+	public String  time;
 	public boolean system;
 	
 	public String getNameClassification( ) { return nameClassification; }
@@ -21,28 +27,27 @@ public class CreateClassificationRequest {
 	public void setParentClassification(String c) { this.parentClassification = c; }
 	
 	public CreateClassificationRequest() {
-		this.id = UUID.randomUUID().toString();		
+		this.id = UUID.randomUUID().toString();	
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
-	public CreateClassificationRequest (String n, String parentId) {
+	public CreateClassificationRequest (String n, String parentId, String userName, String userID) {
 		this.nameClassification = n;
 		this.id = UUID.randomUUID().toString();
 		this.parentClassification = parentId;
+		this.userName= userName;
+		this.userID = userID;
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
-	public CreateClassificationRequest (String n) {
+	public CreateClassificationRequest (String n, String userName, String userID) {
 		this.nameClassification = n;
 		this.id = UUID.randomUUID().toString();
 		this.parentClassification = null;
+		this.userName= userName;
+		this.userID = userID;
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
-	
-	/**
-	public CreateClassificationRequest (String n, double val, boolean system) {
-		this.parent = n;
-		this.child = val;
-		this.system = system;
-	}
-	**/
 	
 	public String toString() {
 		return "CreateClassification(" + nameClassification + "," + id + " "+ ","+ "parentClassification)";

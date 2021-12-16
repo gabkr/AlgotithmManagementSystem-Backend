@@ -2,10 +2,16 @@ package cs509.thalassa.demo.http;
 
 import java.util.UUID;
 
+import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
+
 public class CreateImplementationRequest {
 	public String implementationFile;
 	public String algorithmId;
 	public String idImplementation;
+	public String userName;
+	public String userID;
+	public String  time;
 	public boolean system;
 	public String value;
 	
@@ -26,14 +32,18 @@ public class CreateImplementationRequest {
 	
 	public CreateImplementationRequest() {
 		this.idImplementation = UUID.randomUUID().toString();
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
-	public CreateImplementationRequest (String n, String algorithmId, String value) {
+	public CreateImplementationRequest (String n, String algorithmId, String value, String userName, String userID) {
 		this.implementationFile = n;
 		this.idImplementation = UUID.randomUUID().toString();
 		this.algorithmId = algorithmId;
 		this.system = true;
 		this.value = value;
+		this.userName= userName;
+		this.userID = userID;
+		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
 	

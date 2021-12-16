@@ -14,9 +14,11 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
 import cs509.thalassa.demo.db.AlgorithmsDAO;
+import cs509.thalassa.demo.db.UserHistoryDAO;
 import cs509.thalassa.demo.http.CreateAlgorithmRequest;
 import cs509.thalassa.demo.http.CreateAlgorithmResponse;
 import cs509.thalassa.demo.model.Algorithm;
+import cs509.thalassa.demo.model.UserHistory;
 
 /**
  * Create a new constant and store in S3 bucket.
@@ -47,8 +49,16 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 			return dao.addAlgorithm(algorithm);
 		} else {
 			return false;
-		}
+		}	
 	}
+	
+	void createUserHistory(String nameAlgorithm, String userName, String userID, String time) throws Exception { 
+		if (logger != null) { logger.log("in createAlgorithm"); }
+		
+		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
+		// check if present
+		UserHistory userHistory = new UserHistory(userID, userName, nameAlgorithm, time);
+		dao1.addUserHistory(userHistory);}
 	
 	/** Create S3 bucket
 	 * 
@@ -100,6 +110,7 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 			**/
 			if (createAlgorithm(req.nameAlgorithm, req.idAlgorithm, req.parentId)) {
 				response = new CreateAlgorithmResponse(req.idAlgorithm);
+				createUserHistory(req.nameAlgorithm, req.userName, req.userID, req.time);
 			} else {
 				response = new CreateAlgorithmResponse(req.nameAlgorithm, 422);
 			}
