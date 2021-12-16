@@ -8,6 +8,7 @@ import java.util.List;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 import cs509.thalassa.demo.model.Algorithm;
+import cs509.thalassa.demo.model.Classification;
 import cs509.thalassa.demo.model.ProblemInstance;
 
 public class ProblemInstanceDAO {
@@ -27,7 +28,7 @@ public class ProblemInstanceDAO {
 	public List<ProblemInstance> getProblemInstances(String algorithmId) throws Exception {
 		try {
 			List<ProblemInstance> problemInstances = new ArrayList<>();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmId=?;");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmID=?;");
             ps.setString(1,  algorithmId);
             ResultSet resultSet = ps.executeQuery();
             
@@ -62,7 +63,7 @@ public class ProblemInstanceDAO {
 	
 	public boolean deleteProblemInstance(String problemInstanceId) throws Exception {
 		try {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE ProblemInstanceId=?;");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE ProblemInstanceID=?;");
 			ps.setString(1, problemInstanceId);
 			ps.execute();
 			return true;
@@ -72,11 +73,35 @@ public class ProblemInstanceDAO {
 		}
 	}
 
+    public ProblemInstance getProblemInstanceByID(String id) throws Exception {
+        
+        try {
+            ProblemInstance problemInstance = null;
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ProblemInstanceID=?;");
+            ps.setString(1,  id);
+            ResultSet resultSet = ps.executeQuery();
+            
+            while (resultSet.next()) {
+                problemInstance = generateProblemInstance(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+            
+            return problemInstance;
+
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting problemInstance: " + e.getMessage());
+        }
+    }
+	
 	private ProblemInstance generateProblemInstance(ResultSet resultSet) throws Exception {
-		String id = resultSet.getString("ProblemInstanceId");
-		String algorithmId = resultSet.getString("AlgorithmId");
+		String id = resultSet.getString("ProblemInstanceID");
+		String algorithmId = resultSet.getString("AlgorithmID");
 		String input = resultSet.getString("input");
 		String name = resultSet.getString("name");
 		return new ProblemInstance(id, algorithmId, input, name);
 	}
+	
+
 }

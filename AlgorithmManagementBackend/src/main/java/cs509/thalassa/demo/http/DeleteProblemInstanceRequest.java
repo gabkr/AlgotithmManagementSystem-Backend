@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public class DeleteProblemInstanceRequest {
 	public String problemInstanceId;
-	public String name;
 	public String userName;
 	public String userID;
 	public String  time;
@@ -14,9 +13,8 @@ public class DeleteProblemInstanceRequest {
 		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
-	public DeleteProblemInstanceRequest(String name, String problemInstanceId, String userName, String userID) {
+	public DeleteProblemInstanceRequest(String problemInstanceId, String userName, String userID) {
 		this.problemInstanceId = problemInstanceId;
-		this.name = name;
 		this.userName= userName;
 		this.userID = userID;
 		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
