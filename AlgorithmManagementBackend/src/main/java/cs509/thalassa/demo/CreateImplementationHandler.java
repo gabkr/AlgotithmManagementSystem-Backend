@@ -60,7 +60,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
 		// check if present
 		UserHistory userHistory = new UserHistory(userID, userName, implementationName, time);
-		dao1.addUserHistory(userHistory);}
+		dao1.addUserHistory(userHistory, "Create");}
 	
 	/** Create S3 bucket
 	 * 
