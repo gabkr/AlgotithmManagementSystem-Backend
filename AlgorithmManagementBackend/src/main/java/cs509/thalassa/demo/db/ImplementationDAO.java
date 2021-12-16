@@ -133,12 +133,14 @@ public class ImplementationDAO {
             ps = conn.prepareStatement("INSERT INTO " + tblName + " (ImplementationID,AlgorithmID,implementationName,S3Url) values(?,?,?,?);");
             ps.setString(1,  implementation.idImplementation);
             ps.setString(2,  implementation.algorithmId);
-            ps.setString(3,  implementation.implementationFile);
-            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.idImplementation+".txt").toString();
-        	System.out.print(s3loc);
-            ps.setString(4, s3loc);
-            ps.execute();            
+            ps.setString(3,  implementation.implementationName);
+//            s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+//        	String s3loc = s3.getUrl("cs509-thalassa-algorithm-management-system", "implementations/"+implementation.idImplementation+implemention).toString();
+//
+//        	System.out.print(s3loc);
+//            ps.setString(4, s3loc);
+            ps.setNString(4, implementation.s3Url);
+            ps.execute();
             return true;
 
         } catch (Exception e) {

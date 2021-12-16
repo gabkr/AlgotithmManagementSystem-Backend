@@ -6,7 +6,7 @@ import java.time.LocalDateTime; // Import the LocalDateTime class
 import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
 
 public class CreateImplementationRequest {
-	public String implementationFile;
+	public String implementationName;
 	public String algorithmId;
 	public String idImplementation;
 	public String userName;
@@ -14,9 +14,41 @@ public class CreateImplementationRequest {
 	public String  time;
 	public boolean system;
 	public String value;
-	
-	public String getImplementationFile( ) { return implementationFile; }
-	public void setImplementationFile(String implementationFile) { this.implementationFile = implementationFile; }
+
+	public boolean isUpload;
+	public String implementationFileFormat;
+	public String implementationMimeType;
+
+
+	public boolean getIsUpload() {
+		return this.isUpload;
+	}
+
+	public void setIsUpload(boolean isUpload) {
+		this.isUpload = isUpload;
+	}
+
+	public String getImplementationFileFormat() {
+		return this.implementationFileFormat;
+	}
+
+	public void setImplementationFileFormat(String implementationFileFormat) {
+		this.implementationFileFormat = implementationFileFormat;
+	}
+
+	public String getImplementationMimeType() {
+		return this.implementationMimeType;
+	}
+
+	public void setImplementationMimeType(String implementationMimeType) {
+		this.implementationMimeType = implementationMimeType;
+	}
+
+
+
+
+	public String getImplementationName( ) { return implementationName; }
+	public void setImplementationName(String implementationName) { this.implementationName = implementationName; }
 	
 	public boolean getSystem() { return system; }
 	public void setSystem(boolean system) { this.system = system; }
@@ -32,11 +64,12 @@ public class CreateImplementationRequest {
 	
 	public CreateImplementationRequest() {
 		this.idImplementation = UUID.randomUUID().toString();
+		this.isUpload = false;
 		this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 	}
 	
 	public CreateImplementationRequest (String n, String algorithmId, String value, String userName, String userID) {
-		this.implementationFile = n;
+		this.implementationName = n;
 		this.idImplementation = UUID.randomUUID().toString();
 		this.algorithmId = algorithmId;
 		this.system = true;
@@ -48,6 +81,6 @@ public class CreateImplementationRequest {
 	
 	
 	public String toString() {
-		return "CreateImplementation(" + implementationFile + "," + idImplementation + " "+ ","+ algorithmId+ value+")";
+		return "CreateImplementation(" + implementationName + "," + idImplementation + " "+ ","+ algorithmId+ value+")";
 	}
 }

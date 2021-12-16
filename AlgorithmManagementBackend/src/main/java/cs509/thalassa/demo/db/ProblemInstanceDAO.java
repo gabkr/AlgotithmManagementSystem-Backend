@@ -47,10 +47,11 @@ public class ProblemInstanceDAO {
 	
 	public boolean addProblemInstance(ProblemInstance problemInstance) throws Exception {
 		try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (AlgorithmID, ProblemInstanceID, input) values(?,?,?);");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (AlgorithmID, ProblemInstanceID, input, name) values(?,?,?,?);");
             ps.setString(1,  problemInstance.algorithmId);
             ps.setString(2,  problemInstance.id);
             ps.setString(3,  problemInstance.input);
+            ps.setString(4,  problemInstance.name);
             ps.execute();
             return true;
 
@@ -75,6 +76,7 @@ public class ProblemInstanceDAO {
 		String id = resultSet.getString("ProblemInstanceId");
 		String algorithmId = resultSet.getString("AlgorithmId");
 		String input = resultSet.getString("input");
-		return new ProblemInstance(id, algorithmId, input);
+		String name = resultSet.getString("name");
+		return new ProblemInstance(id, algorithmId, input, name);
 	}
 }
