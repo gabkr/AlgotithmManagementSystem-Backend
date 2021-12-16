@@ -54,12 +54,12 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 		}
 	}
 	
-	void createUserHistory(String implementationFile, String userName, String userID, String time) throws Exception { 
+	void createUserHistory(String implementationName, String userName, String userID, String time) throws Exception {
 		if (logger != null) { logger.log("in createImplementation"); }
 		
 		UserHistoryDAO dao1 = new UserHistoryDAO(logger);
 		// check if present
-		UserHistory userHistory = new UserHistory(userID, userName, implementationFile, time);
+		UserHistory userHistory = new UserHistory(userID, userName, implementationName, time);
 		dao1.addUserHistory(userHistory);}
 	
 	/** Create S3 bucket
@@ -129,7 +129,7 @@ public class CreateImplementationHandler implements RequestHandler<CreateImpleme
 
 				if (createImplementation(req.implementationName, req.idImplementation, req.algorithmId, req.value, req.isUpload, req.implementationFileFormat, req.implementationMimeType)) {
 					response = new CreateImplementationResponse(req.idImplementation);
-					createUserHistory(req.implementationFile, req.userName, req.userID, req.time);
+					createUserHistory(req.implementationName, req.userName, req.userID, req.time);
 				} else {
 					response = new CreateImplementationResponse(req.idImplementation, 422);
 				}
