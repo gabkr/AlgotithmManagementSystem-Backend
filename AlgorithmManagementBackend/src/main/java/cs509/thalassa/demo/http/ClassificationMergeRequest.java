@@ -1,28 +1,44 @@
 package cs509.thalassa.demo.http;
 
 public class ClassificationMergeRequest {
-	public String parentClassificationID;
-	public String childClassificationID;
-	public String newClassificationName;
+	public String classificationId1;
+	public String classificationId2;
+	public String name;
 	
-	public String getParentClassification() { return parentClassificationID; }
-	public String getChildClassification() { return childClassificationID; }
-	public String getNewClassificationName() {return newClassificationName; }
-	
-	public void setParentClassification(String c) { this.parentClassificationID = c; }
-	public void setChildClassification(String c) { this.childClassificationID = c; }
-	public void setNewclassificationName(String c) {this.newClassificationName = c; }
+	public String getClassificationId1() {
+		return classificationId1;
+	}
+
+	public void setClassificationId1(String classificationId1) {
+		this.classificationId1 = classificationId1;
+	}
+
+	public String getClassificationId2() {
+		return classificationId2;
+	}
+
+	public void setClassificationId2(String classificationId2) {
+		this.classificationId2 = classificationId2;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public ClassificationMergeRequest() {
 	}
 	
-	public ClassificationMergeRequest (String parentId, String childId, String newName) {
-		this.parentClassificationID = parentId;
-		this.childClassificationID = childId;
-		this.newClassificationName = newName;
+	public ClassificationMergeRequest (String classificationId1, String classificationId2, String name) {
+		this.classificationId1 = classificationId1;
+		this.classificationId2 = classificationId2;
+		this.name = name;
 	}
 	
 	public String toString() {
-		return "ListClassification(" + parentClassificationID + " " + childClassificationID + ")";
+		return "ListClassification(" + classificationId1 + " " + classificationId2 + ")";
 	}
 }

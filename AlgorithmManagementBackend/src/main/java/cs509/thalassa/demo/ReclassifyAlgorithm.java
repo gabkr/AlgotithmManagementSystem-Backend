@@ -17,7 +17,9 @@ public class ReclassifyAlgorithm implements RequestHandler<AlgorithmReclassifyRe
 		logger.log("Deleting algo: " + req.getAlgorithmId());
 		AlgorithmReclassifyResponse response = null;
 		try {
-			Boolean isUpdated = reclassifyAlgorithm(req);
+			if(reclassifyAlgorithm(req)) {
+				logger.log("Reclassified algorithm successfully");
+			}
 			response = new AlgorithmReclassifyResponse(req.getAlgorithmId());
 		}
 		catch (Exception e) {
@@ -28,7 +30,7 @@ public class ReclassifyAlgorithm implements RequestHandler<AlgorithmReclassifyRe
 	
 	public Boolean reclassifyAlgorithm(AlgorithmReclassifyRequest req) throws Exception{
 		AlgorithmsDAO dao = new AlgorithmsDAO(logger);
-		return dao.reclassifyAlgorithm(req.getAlgorithmId(), req.getParentClassification());
+		return dao.reclassifyAlgorithm(req.getAlgorithmId(), req.getClassificationId());
 	}
 	
 }

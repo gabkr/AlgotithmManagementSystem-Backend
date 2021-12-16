@@ -21,8 +21,14 @@ public class ClassificationMergeHandler implements RequestHandler<Classification
 		logger.log("Inside merger classification");
 		ClassificationMergeResponse response;
 		try {
-			Boolean status = mergeClassification(req.newClassificationName, req.getParentClassification(), req.getChildClassification());
-			response = new ClassificationMergeResponse(req.getNewClassificationName(),200);
+			Boolean status = mergeClassification(req.getName(), req.getClassificationId1(), req.getClassificationId2());
+			if(status) {
+				logger.log("Merge successful-----");
+			}
+			else {
+				logger.log("Merge failed");
+			}
+			response = new ClassificationMergeResponse(req.getName(),200);
 		} catch (Exception e){
 			response = new ClassificationMergeResponse("Unable to merge classification: " + "(" + e.getMessage() + ")", 400);
 			e.printStackTrace();
@@ -33,10 +39,6 @@ public class ClassificationMergeHandler implements RequestHandler<Classification
 	boolean mergeClassification(String classificationName, String classificationID1, String classificationID2) throws Exception {
 		if (logger != null) { logger.log("in createClassification"); }
 		ClassificationsDAO dao = new ClassificationsDAO(logger);
-		
-		// check if present
-		//DEcide the return type
-		//TODO delete the comments
 		String newClassificationID = UUID.randomUUID().toString();
 		Boolean status = dao.mergeClassifications(classificationName, newClassificationID, classificationID1, classificationID2);
 		return status;

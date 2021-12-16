@@ -20,6 +20,7 @@ public class DeleteClassificationHandler implements RequestHandler<DeleteClassif
 		DeleteClassificationResponse response;
 		try {
 			Boolean isDeleted = deleteClassification(req);
+			logger.log("outside delete: " + isDeleted);
 			response = new DeleteClassificationResponse(req.getClassificationId());
 		}
 		catch (Exception e) {
@@ -30,6 +31,7 @@ public class DeleteClassificationHandler implements RequestHandler<DeleteClassif
 	
 	public Boolean deleteClassification(DeleteClassificationRequest req) throws Exception{
 		ClassificationsDAO dao = new ClassificationsDAO(logger);
+		logger.log("deleting classification calling DAO");
 		return dao.deleteClassification(req.classificationId);
 	}
 	

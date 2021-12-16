@@ -87,6 +87,21 @@ public class AlgorithmsDAO {
     	}
     	return true;
     }
+    
+    public boolean reclassifyAlgorithmForMerge(String oldClassificationId, String newClassificationID) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE " + tblName + " SET ClassificationID = ? " + "WHERE ClassificationID = ?;");
+    		ps.setString(1, newClassificationID);
+    		ps.setString(2, oldClassificationId);
+    		ps.executeUpdate();
+    		ps.close();
+    		logger.log("Reclassified Algorithms");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+            throw new Exception("Failed in reclassifying algorithm: " + e.getMessage());
+    	}
+    	return true;
+    }
     /**
     public boolean updateClassification(Classification classification) throws Exception {
         try {

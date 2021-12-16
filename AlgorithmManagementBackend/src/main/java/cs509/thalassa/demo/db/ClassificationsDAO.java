@@ -98,6 +98,7 @@ public class ClassificationsDAO {
     
     public boolean deleteClassification(String classificationId) throws Exception {
     	try {
+    		logger.log("Inside DAO delete");
     		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE classificationID = ?;");
     		ps.setNString(1, classificationId);
     		int rs = ps.executeUpdate();
@@ -191,21 +192,65 @@ public class ClassificationsDAO {
         }
     }
 	**/
-	public Boolean mergeClassifications(String name, String newID, String classID1, String classID2) throws Exception{
+	public Boolean mergeClassifications(String name, String newID, String classID1, String classID2) throws Exception {
 		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE "+ tblName +"SET ClassificationID = ?, ClassificationName = ? WHERE ClassificationID in (?,?)");
-			ps.setString(1, newID);
-			ps.setString(2, name);
-			ps.setString(3, classID1);
-			ps.setString(4, classID2);
-			ps.executeUpdate();
-			return true;
+        	List<Classification> classList = new ArrayList<>();
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE ClassificationID in (?,?);");
+            ps1.setString(1,  classID1);
+            ps1.setString(2, classID2);
+            ResultSet resultSet = ps1.executeQuery();
+            while(resultSet.next()) {
+            	classList.add(generateClassification(resultSet));
+            }
+            if(classList.size() == 2) {
+            	Classification classification1 = classList.get(0);
+            	Classification classification2 = classList.get(1);
+            	if(classification1.parentClassification != null && classification2.parentClassification != null) {
+            		logger.log("parent classification exists for both ..... terminating merge");
+            		return false;
+            	}
+            	else if(classification1.parentClassification == null || classification2.parentClassification == null) {
+            		
+            		String parentClassificationID = null;
+            		if(classification1.parentClassification != null && classification2.parentClassification == null) {
+            			parentClassificationID = classification1.parentClassification;
+            		}
+            		else if(classification1.parentClassification == null && classification2.parentClassification != null) {
+            			parentClassificationID = classification2.parentClassification;
+            		}
+            		logger.log("Merging two classifications with parent " + parentClassificationID + " new ID = " + newID);
+            		PreparedStatement ps2 = conn.prepareStatement("INSERT INTO "+ tblName +" (ClassificationID, ClassificationName, ParentID) VALUES (?, ?, ?)");
+        			ps2.setString(1, newID);
+        			ps2.setString(2, name);
+        			ps2.setString(3, parentClassificationID);
+        			ps2.executeUpdate();
+        			
+        			logger.log("Reclassifying algorithms for existing classifications");
+        			AlgorithmsDAO algoDAO = new AlgorithmsDAO(logger);
+        			algoDAO.reclassifyAlgorithmForMerge(classification1.id, newID);
+        			algoDAO.reclassifyAlgorithmForMerge(classification2.id, newID);
+        			
+        			logger.log("Delete exisiting classifications");
+            		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE classificationID in (?, ?);");
+            		ps.setNString(1, classID1);
+            		ps.setString(2, classID2);
+            		int rs = ps.executeUpdate();
+            		logger.log("Deleted " + rs + " rows");
+        			return true;
+            	}
+            }
+            else {
+            	logger.log("Classification List size not adequate");
+            	return false;
+            }
 		}
 		catch (Exception e) {
 			e.printStackTrace();
             throw new Exception("Failed to merge classification: " + e.getMessage());
 		}
+		return false;
 	}
+	
     private Classification generateClassification(ResultSet resultSet) throws Exception {
         String nameClassification  = resultSet.getString("ClassificationName");
         String id = resultSet.getString("ClassificationID");
