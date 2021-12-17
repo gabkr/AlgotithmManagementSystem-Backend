@@ -33,7 +33,7 @@ public class ClassificationMergeHandler implements RequestHandler<Classification
 			response = new ClassificationMergeResponse("Unable to merge classification: " + "(" + e.getMessage() + ")", 400);
 			e.printStackTrace();
 		}
-		return null;
+		return response;
 	}
 	
 	boolean mergeClassification(String classificationName, String classificationID1, String classificationID2) throws Exception {

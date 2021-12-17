@@ -25,12 +25,6 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 
 	LambdaLogger logger;
 	
-	// To access S3 storage
-	//private AmazonS3 s3 = null;
-		
-	// Note: this works, but it would be better to move this to environment/configuration mechanisms
-	// which you don't have to do for this project.
-	//public static final String REAL_BUCKET = "constants/";
 	
 	/** Store into RDS.
 	 * 
@@ -50,35 +44,6 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 		}
 	}
 	
-	/** Create S3 bucket
-	 * 
-	 * @throws Exception 
-	 */
-	/**
-	boolean createSystemConstant(String name, double value) throws Exception {
-		if (logger != null) { logger.log("in createSystemConstant"); }
-		
-		if (s3 == null) {
-			logger.log("attach to S3 request");
-			s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-			logger.log("attach to S3 succeed");
-		}
-
-		String bucket = REAL_BUCKET;
-		
-		byte[] contents = ("" + value).getBytes();
-		ByteArrayInputStream bais = new ByteArrayInputStream(contents);
-		ObjectMetadata omd = new ObjectMetadata();
-		omd.setContentLength(contents.length);
-		
-		// makes the object publicly visible
-		PutObjectResult res = s3.putObject(new PutObjectRequest("calctest", bucket + name, bais, omd)
-				.withCannedAcl(CannedAccessControlList.PublicRead));
-		
-		// if we ever get here, then whole thing was stored
-		return true;
-	}
-	**/
 	@Override 
 	public CreateAlgorithmResponse handleRequest(CreateAlgorithmRequest req, Context context)  {
 		logger = context.getLogger();
@@ -89,15 +54,7 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 
 		CreateAlgorithmResponse response;
 		try {
-			/**
-			if (req.system) {
-				if (createSystemConstant(req.name, req.value)) {
-					response = new CreateClassificationResponse(req.name);
-				} else {
-					response = new CreateClassificationResponse(req.name, 422);
-				}
-			} else {
-			**/
+
 			if (createAlgorithm(req.nameAlgorithm, req.idAlgorithm, req.parentId)) {
 				response = new CreateAlgorithmResponse(req.idAlgorithm);
 			} else {

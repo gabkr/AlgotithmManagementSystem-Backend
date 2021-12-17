@@ -26,7 +26,7 @@ public class DeleteClassificationHandler implements RequestHandler<DeleteClassif
 		catch (Exception e) {
 			response = new DeleteClassificationResponse(e.getMessage(), 403);
 	}
-		return null;
+		return response;
 	}
 	
 	public Boolean deleteClassification(DeleteClassificationRequest req) throws Exception{

@@ -191,7 +191,22 @@ public class ClassificationsDAO {
             throw new Exception("Failed in getting classifications: " + e.getMessage());
         }
     }
+     * @throws Exception 
 	**/
+    public Boolean reclassifyClassifications(String oldClassificationID, String newClassificationID) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE " + tblName + " SET ParentID = ? " + "WHERE ParentID = ?;");
+    		ps.setString(1, newClassificationID);
+    		ps.setString(2, oldClassificationID);
+    		ps.executeUpdate();
+    		ps.close();
+    		logger.log("Reclassified Classifications");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+            throw new Exception("Failed in reclassifying classification: " + e.getMessage());
+    	}
+    	return true;
+    }
 	public Boolean mergeClassifications(String name, String newID, String classID1, String classID2) throws Exception {
 		try {
         	List<Classification> classList = new ArrayList<>();
@@ -205,13 +220,40 @@ public class ClassificationsDAO {
             if(classList.size() == 2) {
             	Classification classification1 = classList.get(0);
             	Classification classification2 = classList.get(1);
+            	String parentClassificationID = null;
             	if(classification1.parentClassification != null && classification2.parentClassification != null) {
-            		logger.log("parent classification exists for both ..... terminating merge");
-            		return false;
+            		if(classification1.parentClassification.equalsIgnoreCase(classification2.parentClassification)) {
+            			parentClassificationID = classification1.parentClassification;
+            			logger.log("Merging two classifications with parent " + parentClassificationID + " new ID = " + newID);
+                		PreparedStatement ps2 = conn.prepareStatement("INSERT INTO "+ tblName +" (ClassificationID, ClassificationName, ParentID) VALUES (?, ?, ?)");
+            			ps2.setString(1, newID);
+            			ps2.setString(2, name);
+            			ps2.setString(3, parentClassificationID);
+            			ps2.executeUpdate();
+            			
+            			logger.log("Reclassifying algorithms for existing classifications");
+            			AlgorithmsDAO algoDAO = new AlgorithmsDAO(logger);
+            			algoDAO.reclassifyAlgorithmForMerge(classification1.id, newID);
+            			algoDAO.reclassifyAlgorithmForMerge(classification2.id, newID);
+            			logger.log("Reclassifying Classification");
+            			reclassifyClassifications(classification1.id, newID);
+            			reclassifyClassifications(classification2.id, newID);
+            			logger.log("Delete exisiting classifications");
+                		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE classificationID in (?, ?);");
+                		ps.setNString(1, classID1);
+                		ps.setString(2, classID2);
+                		int rs = ps.executeUpdate();
+                		logger.log("Deleted " + rs + " rows");
+            			return true;
+            		}
+            		else {
+	            		logger.log("parent classification exists for both ..... terminating merge");
+	            		return false;
+            		}
             	}
             	else if(classification1.parentClassification == null || classification2.parentClassification == null) {
             		
-            		String parentClassificationID = null;
+            		
             		if(classification1.parentClassification != null && classification2.parentClassification == null) {
             			parentClassificationID = classification1.parentClassification;
             		}
@@ -229,7 +271,9 @@ public class ClassificationsDAO {
         			AlgorithmsDAO algoDAO = new AlgorithmsDAO(logger);
         			algoDAO.reclassifyAlgorithmForMerge(classification1.id, newID);
         			algoDAO.reclassifyAlgorithmForMerge(classification2.id, newID);
-        			
+        			logger.log("Reclassifying Classification");
+        			reclassifyClassifications(classification1.id, newID);
+        			reclassifyClassifications(classification2.id, newID);
         			logger.log("Delete exisiting classifications");
             		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE classificationID in (?, ?);");
             		ps.setNString(1, classID1);
