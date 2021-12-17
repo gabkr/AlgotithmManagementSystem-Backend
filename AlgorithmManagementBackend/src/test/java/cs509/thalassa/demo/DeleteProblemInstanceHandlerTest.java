@@ -38,7 +38,7 @@ public class DeleteProblemInstanceHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteProblemInstanceRequest ccr = new DeleteProblemInstanceRequest( "026b5e0c-fa39-40f3-ab89-c1810bed7924","UserABC", "UserID100");
+    	DeleteProblemInstanceRequest ccr = new DeleteProblemInstanceRequest( "1b322e36-bc74-4bc5-a5a7-8f698a43365a","UserABC", "UserID100");
         
     	ccr.getProblemInstanceId();
     	

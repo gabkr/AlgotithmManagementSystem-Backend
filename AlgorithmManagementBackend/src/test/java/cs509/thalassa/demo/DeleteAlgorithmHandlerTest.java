@@ -38,10 +38,10 @@ public class DeleteAlgorithmHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteAlgorithmRequest ccr = new DeleteAlgorithmRequest( "06221482-8465-4873-a0a1-4d2af37f9b14","User7","IserId7");
+    	DeleteAlgorithmRequest ccr = new DeleteAlgorithmRequest( "02f4533d-2669-429d-b3f3-14f9ae0364ec","User7","IserId7");
         
     	ccr.getAlgorithmId();
-    	ccr.setAlgorithmId("06221482-8465-4873-a0a1-4d2af37f9b14");
+    	ccr.setAlgorithmId("02f4533d-2669-429d-b3f3-14f9ae0364ec");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  

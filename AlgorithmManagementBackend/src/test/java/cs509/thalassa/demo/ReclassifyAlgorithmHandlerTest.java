@@ -38,12 +38,12 @@ public class ReclassifyAlgorithmHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	AlgorithmReclassifyRequest ccr = new AlgorithmReclassifyRequest("086fd3de-be63-42c5-a5c2-beaa8668c512", "91540fbb-7c31-4c61-8e4d-9a2a0fb79ac8", "User5", "UserID5");
+    	AlgorithmReclassifyRequest ccr = new AlgorithmReclassifyRequest("086fd3de-be63-42c5-a5c2-beaa8668c512", "91c4ce24-d71f-47ae-8d0a-090c90b980a1", "User5", "UserID5");
         
     	ccr.getAlgorithmId();
     	ccr.getClassificationId();
-    	ccr.setAlgorithmId("086fd3de-be63-42c5-a5c2-beaa8668c512");
-    	ccr.setClassificationId("91540fbb-7c31-4c61-8e4d-9a2a0fb79ac8");
+    	ccr.setAlgorithmId("v");
+    	ccr.setClassificationId("91c4ce24-d71f-47ae-8d0a-090c90b980a1");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         

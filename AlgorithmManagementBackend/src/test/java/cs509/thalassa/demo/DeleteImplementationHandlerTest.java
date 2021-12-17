@@ -38,10 +38,10 @@ public class DeleteImplementationHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteImplementationRequest ccr = new DeleteImplementationRequest( "fd0ec96b-95cb-456e-9f29-3d5768c71e14");
+    	DeleteImplementationRequest ccr = new DeleteImplementationRequest( "0abb1e18-d8de-4b59-9ca4-ee3665f568ea");
         
     	ccr.getImplementationId();
-    	ccr.setImplementationId("fd0ec96b-95cb-456e-9f29-3d5768c71e14");
+    	ccr.setImplementationId("0abb1e18-d8de-4b59-9ca4-ee3665f568ea");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  

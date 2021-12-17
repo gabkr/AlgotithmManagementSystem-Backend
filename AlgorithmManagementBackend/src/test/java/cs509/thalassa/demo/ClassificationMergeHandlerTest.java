@@ -38,14 +38,37 @@ public class ClassificationMergeHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("a240feea-af7e-4906-8882-013543c4657e", "a834299b-c467-4202-b713-29285bd176b7", "Merged5","User5", "UserID5");
+    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("39c29836-cf91-46e4-b083-c651f7c02ecb", "681eba51-e415-4995-8445-4e6ea5c81bb5", "Merged8","User5", "UserID5");
         
     	ccr.getClassificationId1();
     	ccr.getClassificationId2();
     	ccr.getName();
-    	ccr.setClassificationId1("a240feea-af7e-4906-8882-013543c4657e");
-    	ccr.setClassificationId2("a834299b-c467-4202-b713-29285bd176b7");
-    	ccr.setName("Merged5");
+    	ccr.setClassificationId1("3a6d3c33-c398-4c5e-a94b-e142d7bd70df");
+    	ccr.setClassificationId2("3b286dbb-a519-4005-93e0-572985f77201");
+    	ccr.setName("Merged8");
+    	
+    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        
+        try {
+        	testSuccessInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+    
+    @Test
+    public void test2ShouldBeOk() {
+    	int rndNum = (int)(990*(Math.random()));
+    	String var = "throwAway" + rndNum;
+    	
+    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("39c29836-cf91-46e4-b083-c651f7c02ecb", "681eba51-e415-4995-8445-4e6ea5c81bb5", "Merged9","User5", "UserID5");
+        
+    	ccr.getClassificationId1();
+    	ccr.getClassificationId2();
+    	ccr.getName();
+    	ccr.setClassificationId1("91c4ce24-d71f-47ae-8d0a-090c90b980a1");
+    	ccr.setClassificationId2("94bc160a-8764-4f62-a8fa-4946b8da0857");
+    	ccr.setName("Merged9");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
