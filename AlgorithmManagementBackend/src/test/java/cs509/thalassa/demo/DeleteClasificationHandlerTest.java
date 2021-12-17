@@ -38,9 +38,10 @@ public class DeleteClasificationHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteClassificationRequest ccr = new DeleteClassificationRequest( "2e7ad24a-7025-496b-8755-04b155937598","User7","IserId7");
+    	DeleteClassificationRequest ccr = new DeleteClassificationRequest( "03819a14-1bbb-4ecd-839b-b22463966535","User7","IserId7");
         
     	ccr.getClassificationId();
+    	ccr.setClassificationId("03819a14-1bbb-4ecd-839b-b22463966535");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  

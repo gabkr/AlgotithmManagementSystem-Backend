@@ -38,15 +38,15 @@ public class CreateUserRequestTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	CreateUserRequest ccr = new CreateUserRequest("13","Harry", "harry@harry", "hry");
+    	CreateUserRequest ccr = new CreateUserRequest("131","Harry2", "ha2rry@ha2rry", "2hry");
     	ccr.getEmail();
     	ccr.getId();
     	ccr.getName();
     	ccr.getUsername();
-    	ccr.setEmail("harry@harry");
-    	ccr.setId("13");
-    	ccr.setName("Harry");
-    	ccr.setUsername("hry");
+    	ccr.setEmail("ha2rry@harry");
+    	ccr.setId("131");
+    	ccr.setName("Harry2");
+    	ccr.setUsername("2hry");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  
         try {

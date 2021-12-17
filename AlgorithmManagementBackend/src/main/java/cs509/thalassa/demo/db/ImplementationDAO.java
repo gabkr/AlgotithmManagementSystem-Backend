@@ -171,6 +171,21 @@ public class ImplementationDAO {
     }
 	**/
 	
+    public boolean deleteImplementation(String implementationId) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("DELETE FROM" + " " + tblName + " " + "WHERE ImplementationID = ?;");
+    		ps.setNString(1, implementationId);
+    		int rs = ps.executeUpdate();
+    		if(rs==0) {
+    			logger.log("Deleted:" + implementationId);
+    		}
+    	}
+    	catch (Exception e) {
+    		throw new Exception("Failed to delete implementation: " + e.getMessage());
+    	}
+    	return true;
+    }
+    
     private Implementation generateImplementation(ResultSet resultSet) throws Exception {
         String implementationFile  = resultSet.getString("implementationName");
         String idImplementation = resultSet.getString("ImplementationID");
