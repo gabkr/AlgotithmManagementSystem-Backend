@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
+import cs509.thalassa.demo.model.Classification;
 import cs509.thalassa.demo.model.UserHistory;
 
 /**
@@ -49,6 +50,32 @@ public class UserHistoryDAO {
         }
     }
 
+    public List<UserHistory> getUserHistoryByUser(String userId) throws Exception {
+        
+    	List<UserHistory> allUserHistory = new ArrayList<>();
+    	
+        try {
+        	PreparedStatement ps;
+            ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE userID=?;");
+            ps.setString(1,  userId);        		
+
+        	ResultSet resultSet = ps.executeQuery();
+            
+            while (resultSet.next()) {
+            	UserHistory c = generateUserHistory(resultSet);
+                allUserHistory.add(c);
+            }
+            resultSet.close();
+            ps.close();
+            return allUserHistory;} 
+        
+        catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting classification: " + e.getMessage());
+        }
+    }
+
+    
  /**   
     public List<Algorithm> getRelatedAlgorithms(String parentId) throws Exception {
         
