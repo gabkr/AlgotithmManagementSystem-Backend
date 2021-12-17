@@ -7,28 +7,28 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.ClassificationMergeRequest;
-import cs509.thalassa.demo.http.ClassificationMergeResponse;
+import cs509.thalassa.demo.http.ListUserRequest;
+import cs509.thalassa.demo.http.ListUserResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ClassificationMergeHandlerTest extends LambdaTest {
+public class ListUserHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	ListUserHandler handler = new ListUserHandler();
+    	ListUserRequest req = new Gson().fromJson(incoming, ListUserRequest.class);
        
-        ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(200, resp.httpCode);
+        ListUserResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(200, resp.statusCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	ListUserHandler handler = new ListUserHandler();
+    	ListUserRequest req = new Gson().fromJson(incoming, ListUserRequest.class);
 
-    	ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(failureCode, resp.httpCode);
+    	ListUserResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(failureCode, resp.statusCode);
     }
 
    
@@ -38,16 +38,11 @@ public class ClassificationMergeHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("784cf84c-623d-4dae-afc8-8d3ef6930d53", "7fd69d14-eacf-497d-b86d-895c38030e29", "Merged","User5", "UserID5");
-        
-    	ccr.getClassificationId1();
-    	ccr.getClassificationId2();
-    	ccr.getName();
-    	ccr.setClassificationId1("784cf84c-623d-4dae-afc8-8d3ef6930d53");
-    	ccr.setClassificationId2("7fd69d14-eacf-497d-b86d-895c38030e29");
-    	ccr.setName("Merged");
+    	ListUserRequest ccr = new ListUserRequest(2);
+    	ccr.getLimit();
+    	ccr.setLimit(2);
     	
-    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);

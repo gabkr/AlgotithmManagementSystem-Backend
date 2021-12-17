@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.ClassificationMergeRequest;
-import cs509.thalassa.demo.http.ClassificationMergeResponse;
+import cs509.thalassa.demo.http.CreateUserRequest;
+import cs509.thalassa.demo.http.CreateUserResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ClassificationMergeHandlerTest extends LambdaTest {
+public class CreateUserRequestTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	CreateUserHandler handler = new CreateUserHandler();
+    	CreateUserRequest req = new Gson().fromJson(incoming, CreateUserRequest.class);
        
-        ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
+        CreateUserResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.httpCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	CreateUserHandler handler = new CreateUserHandler();
+    	CreateUserRequest req = new Gson().fromJson(incoming, CreateUserRequest.class);
 
-    	ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
+    	CreateUserResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.httpCode);
     }
 
@@ -38,23 +38,24 @@ public class ClassificationMergeHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("784cf84c-623d-4dae-afc8-8d3ef6930d53", "7fd69d14-eacf-497d-b86d-895c38030e29", "Merged","User5", "UserID5");
-        
-    	ccr.getClassificationId1();
-    	ccr.getClassificationId2();
+    	CreateUserRequest ccr = new CreateUserRequest("13","Harry", "harry@harry", "hry");
+    	ccr.getEmail();
+    	ccr.getId();
     	ccr.getName();
-    	ccr.setClassificationId1("784cf84c-623d-4dae-afc8-8d3ef6930d53");
-    	ccr.setClassificationId2("7fd69d14-eacf-497d-b86d-895c38030e29");
-    	ccr.setName("Merged");
-    	
-    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
-        
+    	ccr.getUsername();
+    	ccr.setEmail("harry@harry");
+    	ccr.setId("13");
+    	ccr.setName("Harry");
+    	ccr.setUsername("hry");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+ 
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);
         } catch (IOException ioe) {
         	Assert.fail("Invalid:" + ioe.getMessage());
         }
     }
+    
     
     /**
     @Test

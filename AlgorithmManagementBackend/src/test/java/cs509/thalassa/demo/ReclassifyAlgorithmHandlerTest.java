@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.ClassificationMergeRequest;
-import cs509.thalassa.demo.http.ClassificationMergeResponse;
+import cs509.thalassa.demo.http.AlgorithmReclassifyRequest;
+import cs509.thalassa.demo.http.AlgorithmReclassifyResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ClassificationMergeHandlerTest extends LambdaTest {
+public class ReclassifyAlgorithmHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	ReclassifyAlgorithm handler = new ReclassifyAlgorithm();
+    	AlgorithmReclassifyRequest req = new Gson().fromJson(incoming, AlgorithmReclassifyRequest.class);
        
-        ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
+        AlgorithmReclassifyResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.httpCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ClassificationMergeHandler handler = new ClassificationMergeHandler();
-    	ClassificationMergeRequest req = new Gson().fromJson(incoming, ClassificationMergeRequest.class);
+    	ReclassifyAlgorithm handler = new ReclassifyAlgorithm();
+    	AlgorithmReclassifyRequest req = new Gson().fromJson(incoming, AlgorithmReclassifyRequest.class);
 
-    	ClassificationMergeResponse resp = handler.handleRequest(req, createContext("create"));
+    	AlgorithmReclassifyResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.httpCode);
     }
 
@@ -38,14 +38,12 @@ public class ClassificationMergeHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ClassificationMergeRequest ccr = new ClassificationMergeRequest("784cf84c-623d-4dae-afc8-8d3ef6930d53", "7fd69d14-eacf-497d-b86d-895c38030e29", "Merged","User5", "UserID5");
+    	AlgorithmReclassifyRequest ccr = new AlgorithmReclassifyRequest("6354b889-95e3-4815-af49-e49ea042cf48", "0d8f81d0-faf7-4312-bcb8-c066764aa88d", "User5", "UserID5");
         
-    	ccr.getClassificationId1();
-    	ccr.getClassificationId2();
-    	ccr.getName();
-    	ccr.setClassificationId1("784cf84c-623d-4dae-afc8-8d3ef6930d53");
-    	ccr.setClassificationId2("7fd69d14-eacf-497d-b86d-895c38030e29");
-    	ccr.setName("Merged");
+    	ccr.getAlgorithmId();
+    	ccr.getClassificationId();
+    	ccr.setAlgorithmId("6354b889-95e3-4815-af49-e49ea042cf48");
+    	ccr.setClassificationId("0d8f81d0-faf7-4312-bcb8-c066764aa88d");
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         

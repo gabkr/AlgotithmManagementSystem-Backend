@@ -15,7 +15,9 @@ public class DeleteAlgorithmsResponse {
 		this.httpCode = 200;
 	}
 	
+	/**
 	public String toString() {
 		return "Response(" + response + ")";
 	}
+	**/
 }

@@ -22,8 +22,10 @@ public class UserHistoryResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) { return "EmptyUserHistory"; }
 		return "UserHistory(" + list.size() + ")";
 	}
+	**/
 }

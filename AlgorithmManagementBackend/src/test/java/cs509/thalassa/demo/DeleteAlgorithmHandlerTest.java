@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.DeleteProblemInstanceRequest;
-import cs509.thalassa.demo.http.DeleteProblemInstanceResponse;
+import cs509.thalassa.demo.http.DeleteAlgorithmRequest;
+import cs509.thalassa.demo.http.DeleteAlgorithmsResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class DeleteProblemInstanceHandlerTest extends LambdaTest {
+public class DeleteAlgorithmHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	DeleteProblemInstanceHandler handler = new DeleteProblemInstanceHandler();
-    	DeleteProblemInstanceRequest req = new Gson().fromJson(incoming, DeleteProblemInstanceRequest.class);
+    	DeleteAlgorithmHandler handler = new DeleteAlgorithmHandler();
+    	DeleteAlgorithmRequest req = new Gson().fromJson(incoming, DeleteAlgorithmRequest.class);
        
-        DeleteProblemInstanceResponse resp = handler.handleRequest(req, createContext("create"));
+        DeleteAlgorithmsResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.httpCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	DeleteProblemInstanceHandler handler = new DeleteProblemInstanceHandler();
-    	DeleteProblemInstanceRequest req = new Gson().fromJson(incoming, DeleteProblemInstanceRequest.class);
+    	DeleteAlgorithmHandler handler = new DeleteAlgorithmHandler();
+    	DeleteAlgorithmRequest req = new Gson().fromJson(incoming, DeleteAlgorithmRequest.class);
 
-    	DeleteProblemInstanceResponse resp = handler.handleRequest(req, createContext("create"));
+    	DeleteAlgorithmsResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.httpCode);
     }
 
@@ -38,9 +38,9 @@ public class DeleteProblemInstanceHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteProblemInstanceRequest ccr = new DeleteProblemInstanceRequest( "88861772-39a2-48e9-9236-b2ac03d380d2","UserABC", "UserID100");
+    	DeleteAlgorithmRequest ccr = new DeleteAlgorithmRequest( "59ecdd0a-bd42-4dbc-9ad1-e2ffb738b850","User7","IserId7");
         
-    	ccr.getProblemInstanceId();
+    	ccr.getAlgorithmId();
     	
     	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  

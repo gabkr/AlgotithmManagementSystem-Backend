@@ -7,6 +7,7 @@ import java.util.List;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 import cs509.thalassa.demo.model.Algorithm;
+import cs509.thalassa.demo.model.Classification;
 
 /**
  * Note that CAPITALIZATION matters regarding the table name. If you create with 
@@ -133,7 +134,34 @@ public class AlgorithmsDAO {
         }
     }
 	**/
+    
+    public Algorithm getAlgorithmById(String id) throws Exception {
+        
+        try {
+            Algorithm algorithm = null;
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmId=?;");
+//            PreparedStatement ps = conn.prepareStatement("Select c1.*, COUNT(distinct c2.id) as childClassificationsCount, COUNT(distinct A.idAlgorithm) as algorithmsCount\n" + 
+//    				"from " + tblName + " c1\n" + 
+//    				"         LEFT JOIN " + tblName + " c2 on c1.id = c2.parentClassification\n" + 
+//    				"         LEFT JOIN " + tblAlgorithmName + " A on c1.id = A.parentId\n" + 
+//    				"where c1.id=? group by c1.id;");
+            ps.setString(1,  id);
+            ResultSet resultSet = ps.executeQuery();
+            
+            while (resultSet.next()) {
+                algorithm = generateAlgorithm(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+            
+            return algorithm;
 
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting algorithm: " + e.getMessage());
+        }
+    }
+    
     public boolean addAlgorithm(Algorithm algorithm) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE AlgorithmName = ?;");

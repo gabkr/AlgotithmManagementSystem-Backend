@@ -28,6 +28,7 @@ public class UserHistoryDAO {
     	}
     }
 
+    /**
     public UserHistory getUserHistory(String Activity) throws Exception {
         
         try {
@@ -49,6 +50,7 @@ public class UserHistoryDAO {
             throw new Exception("Failed in getting user history: " + e.getMessage());
         }
     }
+    **/
 
     public List<UserHistory> getUserHistoryByUser(String userId) throws Exception {
         

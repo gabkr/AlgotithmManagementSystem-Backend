@@ -1,10 +1,5 @@
 Manifest-Version: 1.0
-<<<<<<< HEAD
 Built-By: abhig
 Build-Jdk: 1.8.0_311
-=======
-Built-By: cranial
-Build-Jdk: 1.8.0_292
->>>>>>> cranial-dev
 Created-By: Maven Integration for Eclipse
 
