@@ -27,12 +27,6 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 
 	LambdaLogger logger;
 	
-	// To access S3 storage
-	//private AmazonS3 s3 = null;
-		
-	// Note: this works, but it would be better to move this to environment/configuration mechanisms
-	// which you don't have to do for this project.
-	//public static final String REAL_BUCKET = "constants/";
 	
 	/** Store into RDS.
 	 * 
@@ -99,15 +93,7 @@ public class CreateAlgorithmHandler implements RequestHandler<CreateAlgorithmReq
 
 		CreateAlgorithmResponse response;
 		try {
-			/**
-			if (req.system) {
-				if (createSystemConstant(req.name, req.value)) {
-					response = new CreateClassificationResponse(req.name);
-				} else {
-					response = new CreateClassificationResponse(req.name, 422);
-				}
-			} else {
-			**/
+
 			if (createAlgorithm(req.nameAlgorithm, req.idAlgorithm, req.parentId)) {
 				response = new CreateAlgorithmResponse(req.idAlgorithm);
 				createUserHistory(req.nameAlgorithm, req.userName, req.userID, req.time);
