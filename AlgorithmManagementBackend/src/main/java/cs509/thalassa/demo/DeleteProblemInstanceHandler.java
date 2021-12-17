@@ -1,5 +1,10 @@
 package cs509.thalassa.demo;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -8,6 +13,7 @@ import cs509.thalassa.demo.db.ProblemInstanceDAO;
 import cs509.thalassa.demo.db.UserHistoryDAO;
 import cs509.thalassa.demo.http.DeleteProblemInstanceRequest;
 import cs509.thalassa.demo.http.DeleteProblemInstanceResponse;
+import cs509.thalassa.demo.model.ProblemInstance;
 import cs509.thalassa.demo.model.UserHistory;
 
 public class DeleteProblemInstanceHandler implements RequestHandler<DeleteProblemInstanceRequest, DeleteProblemInstanceResponse>{
@@ -38,10 +44,14 @@ public class DeleteProblemInstanceHandler implements RequestHandler<DeleteProble
 		
 		DeleteProblemInstanceResponse response;
 		
+		ProblemInstanceDAO dao2 = new ProblemInstanceDAO(logger);
+		ProblemInstance ps;
+
 		try {
+			ps = dao2.getProblemInstanceByID(req.problemInstanceId);
+			createUserHistory(ps.name, req.userName, req.userID, req.time);
 			if (deleteProblemInstance(req.problemInstanceId)) {
 				response = new DeleteProblemInstanceResponse("Problem Instance deleted successfully");
-				createUserHistory(req.name, req.userName, req.userID, req.time);
 			} else {
 				response = new DeleteProblemInstanceResponse("Unable to delete problem instance", 422);
 			}
