@@ -12,7 +12,9 @@ public class UserHistoryRequest {
 		this.userId = userId;
 	}
 	
+/**
 	public String toString() {
 		return "ListUserHistoryId(" + userId + ")";
 	}
+**/
 }

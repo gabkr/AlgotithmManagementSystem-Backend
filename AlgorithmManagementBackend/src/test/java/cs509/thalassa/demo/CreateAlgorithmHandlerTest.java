@@ -39,7 +39,33 @@ public class CreateAlgorithmHandlerTest extends LambdaTest {
     	String var = "throwAway" + rndNum;
     	
     	CreateAlgorithmRequest ccr = new CreateAlgorithmRequest("Custom6", "0cf3717c-245d-48f9-ad12-2646c1adb4be", "User5", "UserID5");
-        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        
+    	ccr.getIdAlgorithm();
+    	ccr.getNameAlgorithm();
+    	ccr.getParentId();
+    	ccr.getSystem();
+    	ccr.setParentId("0cf3717c-245d-48f9-ad12-2646c1adb4be");
+    	ccr.setSystem(false);
+    	
+    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        
+        try {
+        	testSuccessInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+    
+    @Test
+    public void test2() {
+    	int rndNum = (int)(500*(Math.random()));
+    	String rand = "Algo" + rndNum;
+    	String var = "throwAway" + rndNum;
+    	
+    	CreateAlgorithmRequest ccr = new CreateAlgorithmRequest("rand", "91c4ce24-d71f-47ae-8d0a-090c90b980a1", "User5", "UserID5");
+        
+    	ccr.setNameAlgorithm(rand);
+    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);

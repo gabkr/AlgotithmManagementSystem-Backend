@@ -40,6 +40,35 @@ public class CreateImplementationHandlerTest extends LambdaTest {
     	
     	CreateImplementationRequest ccr = new CreateImplementationRequest("ImplementationNew","57c64e86-0eff-43b9-a29b-bc38ea142991","This is a sample implementation",
     			"User7","UserID7");
+    	
+    	ccr.getAlgorithmId();
+    	ccr.getIdImplementation();
+    	ccr.getImplementationFileFormat();
+    	ccr.getImplementationMimeType();
+    	ccr.getImplementationName();
+    	ccr.getIsUpload();
+    	ccr.getSystem();
+    	ccr.getValue();
+    	ccr.setAlgorithmId("57c64e86-0eff-43b9-a29b-bc38ea142991");
+    	ccr.setSystem(true);
+    	ccr.setValue("This is a code");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        
+        try {
+        	testSuccessInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+    
+    @Test
+    public void test2() {
+    	int rndNum = (int)(200*(Math.random()));
+    	String rand = "Algo" + rndNum;
+    	String var = "throwAway" + rndNum;
+    	
+    	CreateImplementationRequest ccr = new CreateImplementationRequest(rand,"f36c4990-a8ab-45cb-80e2-f3cc7e66f358","This is a sample implementation",
+    			"User7","UserID7");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

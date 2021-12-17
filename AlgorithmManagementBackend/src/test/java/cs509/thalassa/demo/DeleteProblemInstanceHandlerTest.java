@@ -38,8 +38,11 @@ public class DeleteProblemInstanceHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	DeleteProblemInstanceRequest ccr = new DeleteProblemInstanceRequest( "f85dfd09-6385-4ed8-89ca-fdfc98136b9e","UserABC", "UserID100");
-        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+    	DeleteProblemInstanceRequest ccr = new DeleteProblemInstanceRequest( "de402d6b-f00f-466b-8bad-3257b68822ec","UserABC", "UserID100");
+        
+    	ccr.getProblemInstanceId();
+    	
+    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);

@@ -14,6 +14,7 @@ public class Algorithm {
 	/**
 	 * Equality of Constants determined by name alone.
 	 */
+	/**
 	public boolean equals (Object o) {
 		if (o == null) { return false; }
 		
@@ -28,4 +29,5 @@ public class Algorithm {
 	public String toString() {
 		return "[" + id + " " + name + " " + classificationId + "]";
 	}
+	**/
 }

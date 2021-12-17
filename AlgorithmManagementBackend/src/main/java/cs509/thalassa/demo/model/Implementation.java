@@ -8,6 +8,7 @@ public class Implementation {
 	public final String value;
 	public final String s3Url;
 	
+
 	public Implementation (String implementationName, String idImplementation, String algorithmId, String value) {
 		this.implementationName = implementationName;
 		this.idImplementation = idImplementation;
@@ -16,7 +17,7 @@ public class Implementation {
 		this.value = value;
 		this.s3Url = null;
 	}
-	
+
 	public Implementation (String implementationName, String idImplementation, String algorithmId, String value, String s3Url) {
 		this.implementationName = implementationName;
 		this.idImplementation = idImplementation;
@@ -26,11 +27,13 @@ public class Implementation {
 		this.s3Url = s3Url;
 	}
 	
+	/**
 	public boolean getSystem() { return system; }
 	
 	/**
 	 * Equality of Constants determined by name alone.
 	 */
+	/**
 	public boolean equals (Object o) {
 		if (o == null) { return false; }
 		
@@ -47,4 +50,5 @@ public class Implementation {
 		if (system) { sysString = " (system)"; }
 		return "[" + implementationName+ " " + idImplementation+ " " + algorithmId + value + sysString + "]";
 	}
+	**/
 }

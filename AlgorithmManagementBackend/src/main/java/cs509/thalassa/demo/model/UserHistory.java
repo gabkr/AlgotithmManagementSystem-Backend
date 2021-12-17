@@ -16,6 +16,7 @@ public class UserHistory {
 	/**
 	 * Equality of Constants determined by name alone.
 	 */
+	/**
 	public boolean equals (Object o) {
 		if (o == null) { return false; }
 		
@@ -30,4 +31,5 @@ public class UserHistory {
 	public String toString() {
 		return "[" + UserID + " " + Username + " " + Activity + ActivityTime + "]";
 	}
+	**/
 }

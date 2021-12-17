@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.UserHistoryRequest;
-import cs509.thalassa.demo.http.UserHistoryResponse;
+import cs509.thalassa.demo.http.ListProblemInstancesRequest;
+import cs509.thalassa.demo.http.ListProblemInstancesResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListUserHistoryHandlerTest extends LambdaTest {
+public class ListProblemInstancesHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListProblemInstancesHandler handler = new ListProblemInstancesHandler();
+    	ListProblemInstancesRequest req = new Gson().fromJson(incoming, ListProblemInstancesRequest.class);
        
-        UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+        ListProblemInstancesResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.statusCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListProblemInstancesHandler handler = new ListProblemInstancesHandler();
+    	ListProblemInstancesRequest req = new Gson().fromJson(incoming, ListProblemInstancesRequest.class);
 
-    	UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+    	ListProblemInstancesResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.statusCode);
     }
 
@@ -38,8 +38,10 @@ public class ListUserHistoryHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	UserHistoryRequest ccr = new UserHistoryRequest("UserID5");
-    	ccr.getuserId();
+    	ListProblemInstancesRequest ccr = new ListProblemInstancesRequest("f36c4990-a8ab-45cb-80e2-f3cc7e66f358");
+    	
+    	ccr.getAlgorithmId();
+    	ccr.setAlgorithmId("f36c4990-a8ab-45cb-80e2-f3cc7e66f358");
     	
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         

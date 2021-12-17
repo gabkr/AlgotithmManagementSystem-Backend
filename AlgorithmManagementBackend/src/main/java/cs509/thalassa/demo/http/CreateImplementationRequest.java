@@ -54,7 +54,7 @@ public class CreateImplementationRequest {
 	public void setSystem(boolean system) { this.system = system; }
 	
 	public String getIdImplementation() { return idImplementation; }
-	public void setIdImplementation(String d) { this.idImplementation = d; }
+	//public void setIdImplementation(String d) { this.idImplementation = d; }
 	
 	public String getAlgorithmId() { return algorithmId; }
 	public void setAlgorithmId(String c) { this.algorithmId = c; }

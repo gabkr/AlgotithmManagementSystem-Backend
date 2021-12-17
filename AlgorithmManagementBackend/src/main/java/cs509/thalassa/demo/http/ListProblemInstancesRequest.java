@@ -18,7 +18,9 @@ public class ListProblemInstancesRequest {
 		this.algorithmId = algorithmId;
 	}
 	
+	/**
 	public String toString() {
 		return "ListProblemInstances(" + this.algorithmId + ")";
 	}
+	**/
 }
