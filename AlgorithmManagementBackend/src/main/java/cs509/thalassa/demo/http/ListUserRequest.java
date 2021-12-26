@@ -18,7 +18,9 @@ public class ListUserRequest {
 		this.limit = limit;
 	}
 	
+	/**
 	public String toString() {
 		return "Limit for list Users" + limit + ")";
 	}
+	**/
 }

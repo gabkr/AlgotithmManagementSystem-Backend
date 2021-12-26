@@ -15,15 +15,6 @@ public class Classification {
 		this.system = false;
 	}
 
-	public Classification (String nameClassification, String id) {
-		this.nameClassification = nameClassification;
-		this.id = id;
-		this.parentClassification = null;
-		this.system = false;
-//		this.childClassificationsCount = 0;
-//		this.algorithmsCount = 0;
-	}
-
 //	public Classification (String nameClassification, String id, String parentClassification) {
 //		this.nameClassification = nameClassification;
 //		this.id = id;
@@ -47,6 +38,7 @@ public class Classification {
 	/**
 	 * Equality of Constants determined by name alone.
 	 */
+	/**
 	public boolean equals (Object o) {
 		if (o == null) { return false; }
 		
@@ -63,4 +55,5 @@ public class Classification {
 		if (system) { sysString = " (system)"; }
 		return "[" + nameClassification+ " " + id+ " " + parentClassification + sysString + "]";
 	}
+	**/
 }

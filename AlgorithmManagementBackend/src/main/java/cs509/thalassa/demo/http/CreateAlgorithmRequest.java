@@ -21,7 +21,7 @@ public class CreateAlgorithmRequest {
 	public void setSystem(boolean system) { this.system = system; }
 	
 	public String getIdAlgorithm() { return idAlgorithm; }
-	public void setIdAlgorithm(String d) { this.idAlgorithm = d; }
+	//public void setIdAlgorithm(String d) { this.idAlgorithm = d; }
 	
 	public String getParentId() { return parentId; }
 	public void setParentId(String c) { this.parentId = c; }

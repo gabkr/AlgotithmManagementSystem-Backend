@@ -22,6 +22,7 @@ public class ListProblemInstancesResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) {
 			return "Empty Problem Instances";
@@ -29,4 +30,5 @@ public class ListProblemInstancesResponse {
 
 		return "Problem Instances(" + list.size() + ")";
 	}
+	**/
 }

@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.UserHistoryRequest;
-import cs509.thalassa.demo.http.UserHistoryResponse;
+import cs509.thalassa.demo.http.ListAlgorithmRequest;
+import cs509.thalassa.demo.http.AllAlgorithmsResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListUserHistoryHandlerTest extends LambdaTest {
+public class ListAllAlgorithmsHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListAllAlgorithmsHandler handler = new ListAllAlgorithmsHandler();
+    	ListAlgorithmRequest req = new Gson().fromJson(incoming, ListAlgorithmRequest.class);
        
-        UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+        AllAlgorithmsResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.statusCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListAllAlgorithmsHandler handler = new ListAllAlgorithmsHandler();
+    	ListAlgorithmRequest req = new Gson().fromJson(incoming, ListAlgorithmRequest.class);
 
-    	UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+    	AllAlgorithmsResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.statusCode);
     }
 
@@ -38,8 +38,10 @@ public class ListUserHistoryHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	UserHistoryRequest ccr = new UserHistoryRequest("UserID5");
-    	ccr.getuserId();
+    	ListAlgorithmRequest ccr = new ListAlgorithmRequest("9c350447-0ab7-4082-b80d-ff1ef4518521");
+    	
+    	ccr.getClassificationId();
+    	ccr.setClassificationId("9c350447-0ab7-4082-b80d-ff1ef4518521");
     	
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         

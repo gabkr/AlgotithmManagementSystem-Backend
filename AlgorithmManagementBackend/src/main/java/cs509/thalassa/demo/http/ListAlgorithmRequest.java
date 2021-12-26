@@ -13,7 +13,9 @@ public class ListAlgorithmRequest {
 		this.classificationId = classificationId;
 	}
 	
+	/**
 	public String toString() {
 		return "ListClassification(" + classificationId + ")";
 	}
+	**/
 }

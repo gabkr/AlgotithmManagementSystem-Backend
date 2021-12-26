@@ -48,6 +48,50 @@ public class CreateClassificationHandlerTest extends LambdaTest {
         }
     }
     
+    @Test
+    public void test2() {
+    	int rndNum = (int)(990*(Math.random()));
+    	String var = "throwAway" + rndNum;
+    	
+    	CreateClassificationRequest ccr = new CreateClassificationRequest("ClassificationABCDE", "User6", "UserID6");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+        
+        ccr.getParentClassification();
+        ccr.setParentClassification("91540fbb-7c31-4c61-8e4d-9a2a0fb79ac8");
+        ccr.setNameClassification("ClassificationABCDEF");
+        ccr.getNameClassification();
+        ccr.getSystem();
+        ccr.setSystem(false);
+        try {
+        	testSuccessInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+
+    
+    @Test
+    public void test3() {
+    	int rndNum = (int)(990*(Math.random()));
+    	String rand = "Class" + rndNum;
+    	String var = "throwAway" + rndNum;
+    	
+    	CreateClassificationRequest ccr = new CreateClassificationRequest(rand, "User9", "UserID9");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+        
+        ccr.getParentClassification();
+        ccr.setParentClassification("91540fbb-7c31-4c61-8e4d-9a2a0fb79ac8");
+        ccr.setNameClassification("ClassificationABCDEF");
+        ccr.getNameClassification();
+        ccr.getSystem();
+        ccr.setSystem(false);
+        try {
+        	testSuccessInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+    
     /**
     @Test
     public void testGarbageInput() {

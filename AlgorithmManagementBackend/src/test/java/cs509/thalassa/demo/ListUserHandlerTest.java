@@ -7,27 +7,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.UserHistoryRequest;
-import cs509.thalassa.demo.http.UserHistoryResponse;
+import cs509.thalassa.demo.http.ListUserRequest;
+import cs509.thalassa.demo.http.ListUserResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListUserHistoryHandlerTest extends LambdaTest {
+public class ListUserHandlerTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListUserHandler handler = new ListUserHandler();
+    	ListUserRequest req = new Gson().fromJson(incoming, ListUserRequest.class);
        
-        UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+        ListUserResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(200, resp.statusCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	ListUserHandler handler = new ListUserHandler();
+    	ListUserRequest req = new Gson().fromJson(incoming, ListUserRequest.class);
 
-    	UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
+    	ListUserResponse resp = handler.handleRequest(req, createContext("create"));
         Assert.assertEquals(failureCode, resp.statusCode);
     }
 
@@ -38,8 +38,9 @@ public class ListUserHistoryHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	UserHistoryRequest ccr = new UserHistoryRequest("UserID5");
-    	ccr.getuserId();
+    	ListUserRequest ccr = new ListUserRequest(2);
+    	ccr.getLimit();
+    	ccr.setLimit(2);
     	
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         

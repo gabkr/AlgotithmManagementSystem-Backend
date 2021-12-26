@@ -35,11 +35,21 @@ public class CreateProblemInstanceHandlerTest extends LambdaTest {
     // NOTE: this proliferates large number of constants! Be mindful
     @Test
     public void testShouldBeOk() {
-    	int rndNum = (int)(990*(Math.random()));
+    	int rndNum = (int)(100*(Math.random()));
+    	String rand = "Prob" + rndNum;
     	String var = "throwAway" + rndNum;
     	
-    	CreateProblemInstanceRequest ccr = new CreateProblemInstanceRequest("8c997607-99d3-4446-8928-456348d08556","1,2,3,4", "Prob1","User6", "UserID6");
-        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+    	CreateProblemInstanceRequest ccr = new CreateProblemInstanceRequest("6151f3ef-4311-4d0f-856a-dead4e6b4045","1,2,3,4", rand,"User6", "UserID6");
+        
+    	ccr.getAlgorithmId();
+    	ccr.getInput();
+    	ccr.getName();
+    	ccr.getProblemInstanceId();
+    	ccr.setAlgorithmId("6151f3ef-4311-4d0f-856a-dead4e6b4045");
+    	ccr.setName(rand);
+    	ccr.setInput("1,2,3,4");
+    	
+    	String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
  
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);

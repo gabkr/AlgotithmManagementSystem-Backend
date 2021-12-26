@@ -13,6 +13,7 @@ public class ProblemInstance {
 		this.name = name;
 	}
 	
+	/**
 	public boolean equals (Object o) {
 		if (o == null) {
 			return false;
@@ -29,4 +30,5 @@ public class ProblemInstance {
 	public String toString() {
 		return "[" + id + " " + algorithmId + " " + name + " " + input + "]";
 	}
+	**/
 }

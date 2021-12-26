@@ -49,9 +49,9 @@ public class DeleteProblemInstanceHandler implements RequestHandler<DeleteProble
 
 		try {
 			ps = dao2.getProblemInstanceByID(req.problemInstanceId);
-			createUserHistory(ps.name, req.userName, req.userID, req.time);
 			if (deleteProblemInstance(req.problemInstanceId)) {
 				response = new DeleteProblemInstanceResponse("Problem Instance deleted successfully");
+				createUserHistory(ps.name, req.userName, req.userID, req.time);
 			} else {
 				response = new DeleteProblemInstanceResponse("Unable to delete problem instance", 422);
 			}

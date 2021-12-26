@@ -22,8 +22,10 @@ public class AllAlgorithmsResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) { return "Empty Algorithms"; }
 		return "AllAlgorithms(" + list.size() + ")";
 	}
+	**/
 }

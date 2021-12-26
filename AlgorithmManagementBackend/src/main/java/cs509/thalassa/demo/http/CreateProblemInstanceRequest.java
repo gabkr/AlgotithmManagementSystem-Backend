@@ -45,9 +45,9 @@ public class CreateProblemInstanceRequest {
 		this.algorithmId = algorithmId;
 	}
 	
-	public void setProblemInstanceId(String problemInstanceId) {
-		this.problemInstanceId = problemInstanceId;
-	}
+	//public void setProblemInstanceId(String problemInstanceId) {
+		//this.problemInstanceId = problemInstanceId;
+	//}
 	
 	public void setInput(String input) {
 		this.input = input;

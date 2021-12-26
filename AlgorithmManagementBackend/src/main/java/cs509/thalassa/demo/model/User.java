@@ -13,6 +13,7 @@ public class User {
 		this.username = username;
 	}
 
+	/**
 	public String getName() {
 		return name;
 	}
@@ -28,10 +29,11 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-
+**/
 	/**
 	 * Equality of Constants determined by name alone.
 	 */
+	/**
 	public boolean equals (Object o) {
 		if (o == null) { return false; }
 		
@@ -42,8 +44,10 @@ public class User {
 		
 		return false;  // not an algorithm
 	}
-
+**/
+	/**
 	public String toString() {
 		return "[" + id + " " + name + " " + username + " " + email + "]";
 	}
+	**/
 }

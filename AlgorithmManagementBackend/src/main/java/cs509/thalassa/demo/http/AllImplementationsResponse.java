@@ -22,8 +22,10 @@ public class AllImplementationsResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) { return "EmptyImplementations"; }
 		return "AllImplementations(" + list.size() + ")";
 	}
+	**/
 }

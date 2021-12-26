@@ -38,7 +38,11 @@ public class ListAllClassificationsHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	ListClassificationRequest ccr = new ListClassificationRequest("1");
+    	ListClassificationRequest ccr = new ListClassificationRequest("0d8f81d0-faf7-4312-bcb8-c066764aa88d");
+    	
+    	ccr.getParentClassification();
+    	ccr.setParentClassification("0d8f81d0-faf7-4312-bcb8-c066764aa88d");
+    	
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

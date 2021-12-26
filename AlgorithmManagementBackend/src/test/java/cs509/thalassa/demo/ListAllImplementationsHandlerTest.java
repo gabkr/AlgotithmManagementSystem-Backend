@@ -39,6 +39,10 @@ public class ListAllImplementationsHandlerTest extends LambdaTest {
     	String var = "throwAway" + rndNum;
     	
     	ListImplementationRequest ccr = new ListImplementationRequest("8c997607-99d3-4446-8928-456348d08556");
+    	
+    	ccr.getParentAlgorithm();
+    	ccr.setParentAlgorithm("8c997607-99d3-4446-8928-456348d08556");
+    	
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

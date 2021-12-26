@@ -23,8 +23,10 @@ public class ListUserResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) { return "Users not Found"; }
 		return "ListUserResponse(" + list.size() + ")";
 	}
+	**/
 }

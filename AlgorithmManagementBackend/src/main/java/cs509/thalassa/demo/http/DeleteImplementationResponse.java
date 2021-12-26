@@ -1,16 +1,16 @@
 package cs509.thalassa.demo.http;
 
-public class DeleteUserResponse {
+public class DeleteImplementationResponse {
 	public final String response;
 	public final int httpCode;
 	
-	public DeleteUserResponse (String s, int code) {
+	public DeleteImplementationResponse (String s, int code) {
 		this.response = s;
 		this.httpCode = code;
 	}
 	
 	// 200 means success
-	public DeleteUserResponse (String s) {
+	public DeleteImplementationResponse (String s) {
 		this.response = s;
 		this.httpCode = 200;
 	}

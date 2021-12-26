@@ -7,28 +7,28 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import cs509.thalassa.demo.http.UserHistoryRequest;
-import cs509.thalassa.demo.http.UserHistoryResponse;
+import cs509.thalassa.demo.http.CreateUserRequest;
+import cs509.thalassa.demo.http.CreateUserResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListUserHistoryHandlerTest extends LambdaTest {
+public class CreateUserRequestTest extends LambdaTest {
 
     void testSuccessInput(String incoming) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	CreateUserHandler handler = new CreateUserHandler();
+    	CreateUserRequest req = new Gson().fromJson(incoming, CreateUserRequest.class);
        
-        UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(200, resp.statusCode);
+        CreateUserResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(200, resp.httpCode);
     }
 	
     void testFailInput(String incoming, int failureCode) throws IOException {
-    	ListUserHistoryHandler handler = new ListUserHistoryHandler();
-    	UserHistoryRequest req = new Gson().fromJson(incoming, UserHistoryRequest.class);
+    	CreateUserHandler handler = new CreateUserHandler();
+    	CreateUserRequest req = new Gson().fromJson(incoming, CreateUserRequest.class);
 
-    	UserHistoryResponse resp = handler.handleRequest(req, createContext("create"));
-        Assert.assertEquals(failureCode, resp.statusCode);
+    	CreateUserResponse resp = handler.handleRequest(req, createContext("create"));
+        Assert.assertEquals(failureCode, resp.httpCode);
     }
 
    
@@ -38,17 +38,24 @@ public class ListUserHistoryHandlerTest extends LambdaTest {
     	int rndNum = (int)(990*(Math.random()));
     	String var = "throwAway" + rndNum;
     	
-    	UserHistoryRequest ccr = new UserHistoryRequest("UserID5");
-    	ccr.getuserId();
-    	
-        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
-        
+    	CreateUserRequest ccr = new CreateUserRequest("131","Harry2", "ha2rry@ha2rry", "2hry");
+    	ccr.getEmail();
+    	ccr.getId();
+    	ccr.getName();
+    	ccr.getUsername();
+    	ccr.setEmail("ha2rry@harry");
+    	ccr.setId("131");
+    	ccr.setName("Harry2");
+    	ccr.setUsername("2hry");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);
+ 
         try {
         	testSuccessInput(SAMPLE_INPUT_STRING);
         } catch (IOException ioe) {
         	Assert.fail("Invalid:" + ioe.getMessage());
         }
     }
+    
     
     /**
     @Test

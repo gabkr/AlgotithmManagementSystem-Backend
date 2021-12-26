@@ -17,7 +17,9 @@ public class CreateProblemInstanceResponse {
 		this.id = id;
 	}
 	
+	/**
 	public String toString() {
 		return "Response(" + response + ")";
 	}
+	**/
 }

@@ -24,7 +24,9 @@ public class DeleteProblemInstanceRequest {
 		return this.problemInstanceId;
 	}
 	
+	/**
 	public void setProblemInstanceId(String problemInstanceId) {
 		this.problemInstanceId = problemInstanceId;
 	}
+	**/
 }

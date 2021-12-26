@@ -13,7 +13,9 @@ public class ListImplementationRequest {
 		this.parentAlgorithm = parentId;
 	}
 	
+	/**
 	public String toString() {
 		return "ListImplementation(" + parentAlgorithm + ")";
 	}
+	**/
 }

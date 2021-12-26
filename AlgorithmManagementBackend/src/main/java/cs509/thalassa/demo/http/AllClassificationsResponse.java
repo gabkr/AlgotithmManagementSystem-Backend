@@ -22,8 +22,10 @@ public class AllClassificationsResponse {
 		this.error = errorMessage;
 	}
 	
+	/**
 	public String toString() {
 		if (list == null) { return "EmptyClassifications"; }
 		return "AllClassifications(" + list.size() + ")";
 	}
+	**/
 }
